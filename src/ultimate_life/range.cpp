@@ -63,6 +63,8 @@ ul::range<T>::end() { return iterator(m_end, m_step); }
 
 // Concrete definitions for range
 template struct ul::range<int>;
+template struct ul::range<unsigned int>;
 template struct ul::range<long>;
+template struct ul::range<unsigned long>;
 template struct ul::range<float>;
 template struct ul::range<double>;

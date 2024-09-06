@@ -1,72 +1,48 @@
 #include <ultimate_life/life_loop.h>
-#include <SDL2/SDL.h>
+#include <ultimate_life/grid.h>
 #include <iostream>
-#include <algorithm>
-
-
-static const int CELL_SIZE = 5;
-static const int GRID_X = 128;
-static const int GRID_Y = 96;
 
 /**
  * Run life loop on window and renderer
  */
-void UL::life_loop(UL::Window& window, UL::Renderer& renderer) {
+void UL::life_loop(UL::Window& window, UL::Renderer& renderer) 
+{
+    // Init grid
+    UL::Grid grid(window, 2);
 
-    // Declare grid on the stack because lobotomy is me has that happened to.
-    int cells[2][GRID_X][GRID_Y] = {};
-    int f = 0;
-
-    // RPENTOMINO BABY
-    cells[f][71][60] = 1;
-    cells[f][72][60] = 1;
-    cells[f][71][61] = 1;
-    cells[f][70][61] = 1;
-    cells[f][71][62] = 1;
+    // RPENTOMINOOOOOOO
+    grid.aliven(71, 60);
+    grid.aliven(72, 60);
+    grid.aliven(71, 61);
+    grid.aliven(70, 61);
+    grid.aliven(71, 62);
 
     SDL_Event e;
-    while (true) {
-
+    while (true) 
+    {
         // Render current step
+        int s = grid.cell_size();
         renderer.clear();
-        for (size_t i = 0; i < GRID_X; i++)
+        for (size_t i = 0; i < grid.width(); i++)
         {
-            for (size_t j = 0; j < GRID_Y; j++)
+            for (size_t j = 0; j < grid.height(); j++)
             {
-                if (cells[f][i][j]) {
-                    renderer.cell(CELL_SIZE * i, CELL_SIZE * j, CELL_SIZE);
+                if (grid.cell(i, j))
+                {
+                    renderer.cell(i*s, j*s, s);
                 }
             }
         }
+        renderer.update();
         
         // Get next step 
-        int c;
-        for (int i = 0; i < GRID_X; ++i)
-        {
-            for (int j = 0; j < GRID_Y; ++j)
-            {
-                c = 0;
-                for (int u = std::max(0, i - 1); u < std::min(GRID_X, i + 2); u++)
-                {
-                    for (int v = std::max(0, j - 1); v < std::min(GRID_Y, j + 2); v++)
-                    {
-                        if ((u != i || v != j) && cells[f][u][v]) 
-                        {
-                            c++;
-                        }
-                    }
-                }
-                cells[!f][i][j] = (c == 3) || (c == 2 && cells[f][i][j]);
-            }
-        }
-        f = !f;
-
-        // Render a frame
-        renderer.update();
+        grid.update();
 
         // Watch for quit command for now
-        while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_QUIT) {
+        while (SDL_PollEvent(&e)) 
+        {
+            if (e.type == SDL_QUIT) 
+            {
                 std::cout << "Quitting..." << std::endl;
                 return;
             }

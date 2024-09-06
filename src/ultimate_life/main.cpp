@@ -3,14 +3,10 @@
 #include <exception>
 #include <SDL2/SDL.h>
 
-//Screen dimension constants
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
-
 namespace UL {
-    class App {
+    class SDL {
     public:
-        App() {
+        SDL() {
             if(SDL_Init(SDL_INIT_VIDEO) < 0)
             {
                 std::stringstream s;
@@ -18,45 +14,66 @@ namespace UL {
                 throw s.str();
             }
         }
-        ~App() {
+        ~SDL() {
             SDL_Quit();
         }
     };
 
     class Window {
     private:
+        int m_width;
+        int m_height;
         SDL_Window* m_window_handle;
     public:
-        Window(const char* title, int w, int h) {
-            m_window_handle = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, 0);
+        /**
+         * NOTE: We're requesting a reference to an SDL instance 
+         *       in order to ensure that SDL has been initialized
+         */
+        Window(const SDL& _sdl, const char* title, int w, int h): m_width(w), m_height(h) {
+            m_window_handle = SDL_CreateWindow(title, 
+                SDL_WINDOWPOS_UNDEFINED, 
+                SDL_WINDOWPOS_UNDEFINED, 
+                w, h, 0);
         }
         ~Window() {
             SDL_DestroyWindow(m_window_handle);
+        }
+
+        int width() {
+            return m_width;
+        }
+
+        int height() {
+            return m_height;
         }
     };
 };
 
 
-int main(int argc, char const *argv[])
-{
-    UL::App app;
-    UL::Window window("Ultimate Life", SCREEN_WIDTH, SCREEN_HEIGHT);
-
-    // Event loop
+void event_loop(UL::Window& window) {
     SDL_Event e;
-    bool running = true;
-    while (running)
-    {
+    while (true) {
         while (SDL_PollEvent(&e)) {
             switch (e.type)
             {
+
+            // QUIT command
             case SDL_QUIT:
-                running = false;
-                break;
-            
+                std::cout << "Quitting..." << std::endl;
+                return;
+
+
             default:
                 break;
             }
         }
     }
+}
+
+
+int main(int argc, char const *argv[])
+{
+    UL::SDL sdl;
+    UL::Window window(sdl, "Ultimate Life", 640, 480);
+    event_loop(window);
 }

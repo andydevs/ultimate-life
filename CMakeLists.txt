@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.22)
 project(ultimate_life)
 
+set(CMAKE_CXX_STANDARD_REQUIRED 17)
+
 find_package(SDL2)
 include_directories(include)
 

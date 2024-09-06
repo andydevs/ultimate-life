@@ -3,7 +3,7 @@
 #include <ultimate_life/renderer.h>
 
 
-namespace UL
+namespace ul
 {
     /**
      * Run life loop on window and renderer

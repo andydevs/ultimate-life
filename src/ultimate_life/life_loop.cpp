@@ -5,10 +5,10 @@
 /**
  * Run life loop on window and renderer
  */
-void UL::life_loop(UL::Window& window, UL::Renderer& renderer) 
+void ul::life_loop(ul::Window& window, ul::Renderer& renderer) 
 {
     // Init grid
-    UL::Grid grid(window, 2);
+    ul::Grid grid(window, 2);
 
     // RPENTOMINOOOOOOO
     grid.aliven(71, 60);

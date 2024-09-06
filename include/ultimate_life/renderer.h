@@ -2,7 +2,7 @@
 #include <SDL2/SDL.h>
 #include <ultimate_life/window.h>
 
-namespace UL {
+namespace ul {
 
     /**
      * RAII managed SDL Renderer

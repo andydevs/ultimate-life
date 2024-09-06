@@ -7,8 +7,8 @@
 
 int main(int argc, char const *argv[])
 {
-    UL::SDL sdl;
-    UL::Window window(sdl, "Ultimate Life", 640, 480);
-    UL::Renderer renderer(window);
-    UL::life_loop(window, renderer);
+    ul::SDL sdl;
+    ul::Window window(sdl, "Ultimate Life", 640, 480);
+    ul::Renderer renderer(window);
+    ul::life_loop(window, renderer);
 }

@@ -2,7 +2,7 @@
 #include <SDL2/SDL.h>
 #include <ultimate_life/sdl.h>
 
-namespace UL {
+namespace ul {
 
     /**
      * RAII managed SDL window

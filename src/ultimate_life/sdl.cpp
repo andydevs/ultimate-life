@@ -1,13 +1,11 @@
+#include <ultimate_life/macros.h>
 #include <ultimate_life/sdl.h>
 
 
 UL::SDL::SDL() {
-    if(SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
-        std::stringstream s;
-        s << "SDL could not initialize! SDL_Error: " << SDL_GetError();
-        throw s.str();
-    }
+    GUARD_SDL_ERROR(
+        SDL_Init(SDL_INIT_VIDEO), 
+        "SDL could not initialize!");
 }
 
 UL::SDL::~SDL() {

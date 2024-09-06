@@ -36,22 +36,14 @@ int UL::Window::height() {
     return m_height;
 }
 
-void UL::event_loop(UL::Window& window) {
-    SDL_Event e;
-    while (true) {
-        while (SDL_PollEvent(&e)) {
-            switch (e.type)
-            {
-
-            // QUIT command
-            case SDL_QUIT:
-                std::cout << "Quitting..." << std::endl;
-                return;
-
-
-            default:
-                break;
-            }
-        }
-    }
+/**
+ * Get window handle
+ * 
+ * WARN: UNSAFE, should only be used by 
+ *       specific instances. Obtaining
+ *       other properties should be done
+ *       by object methods
+ */
+SDL_Window* UL::Window::__UNSAFE_get_window_handle() {
+    return m_window_handle;
 }

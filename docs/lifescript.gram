@@ -1,0 +1,17 @@
+
+script : line (nonstmt line)*
+
+nonstmt : comment+ | NEWLINE
+comment : '#' .* NEWLINE
+
+line : cell 
+     | prefab 
+     | directive
+
+cell : NUMBER WS NUMBER
+
+directive : `@` IDENTIFIER (WS (IDENTIFIER | NUMBER))*
+prefab : IDENTIFIER cell
+
+IDENTIFIER : [A-Za-z_]\w*
+NUMBER : (\+|\-)?\d+

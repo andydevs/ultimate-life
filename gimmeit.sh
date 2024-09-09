@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 build_type=$(conan profile show | grep -E 'build_type=(\w+)' | head -n1 | sed 's/build_type=//')
 conan install . --build=missing
 source build/$build_type/generators/conanbuild.sh

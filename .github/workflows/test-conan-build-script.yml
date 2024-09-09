@@ -12,18 +12,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - run: sudo apt update -y
-    - run: sudo apt upgrade -y
+      - name: Update APT
+        run: |
+          sudo apt update -y
+          sudo apt upgrade -y
+    
+      - name: Install Conan
+        run: sudo pip install conan
+      
+      - name: Initialize profile
+        run: sudo conan profile detect
 
-    - name: Setup Conan
-      uses: jwidauer/setup-conan@v1
-      with:
-        version: 2.6
-    - name: Initialize profile
-      run: conan profile detect
-
-    - name: Run install script
-      run: sudo -E ./gimmeit.sh
-
+      - name: Run install script
+        run: sudo ./gimmeit.sh

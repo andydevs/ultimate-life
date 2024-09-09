@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
   
 jobs:
-  build:
+  test_build_on_linux:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,6 +21,20 @@ jobs:
       - name: Install Conan
         run: sudo pip install conan
       
+      - name: Initialize profile
+        run: sudo conan profile detect
+
+      - name: Run install script
+        run: sudo ./gimmeit.sh
+
+  test_build_on_mac:
+    runs-on: macos-13
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Conan
+        run: sudo python3 -m pip install conan
+
       - name: Initialize profile
         run: sudo conan profile detect
 

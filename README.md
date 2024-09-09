@@ -6,6 +6,18 @@ Ultimate Life
 
 Conway's Game of Life, but bigger, better, badder
 
+Installation
+---------------------------------------------------------------------------------
+
+Right now we're only installing from source. You will need `conan` to run this.
+If you have Python, simply run `pip install conan` and that should take care of
+that.
+
+Run the `gimmeit.sh` shell in a terminal. It should set up the project, install
+dependencies, build, and install everything
+
+    $ pip install conan
+    $ ./gimmeit.sh
 
 Life Script
 ---------------------------------------------------------------------------------

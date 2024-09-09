@@ -6,14 +6,14 @@
 /**
  * Run life loop on window and renderer
  */
-void ul::life_loop(ul::Window& window, ul::Renderer& renderer, std::vector<std::pair<int, int>>& initial_cells, int cell_size) 
+void ul::life_loop(ul::Window& window, ul::Renderer& renderer, ul::lc::LifeConfig& cfg) 
 {
+    int cellsize = cfg.grid_property("cellsize", 5);
+    std::cout << "Cell size: " << cellsize << std::endl;
+
     // Init grid
-    ul::Grid grid(window, cell_size);
-    for (std::pair<int, int> cell : initial_cells)
-    {
-        grid.aliven(cell.first, cell.second);
-    }
+    ul::Grid grid(window, cellsize);
+    cfg.instantiate(grid);
 
     SDL_Event e;
     while (true) 

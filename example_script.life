@@ -12,10 +12,21 @@ def rpentomino
 end
 
 
+def blinker
+    +1 +0
+    +1 +1
+    +1 +2
+end
+
+
 @rpentomino 70 100
 @rpentomino 100 200
 
 
-10 11
-2 3
-9 3
+10 2
+
+100 100
+
+100 101
+
+100 102

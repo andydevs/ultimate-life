@@ -2,39 +2,29 @@
 #include <ultimate_life/window.h>
 #include <ultimate_life/renderer.h>
 #include <ultimate_life/life_loop.h>
+#include <ultimate_life/lifeconfig.h>
 #include <iostream>
 #include <vector>
 
 
-using cell = std::pair<int, int>;
-using cell_set = std::vector<std::pair<int, int>>;
-
-
-/**
- * RPENTOMINOOOOOOO
- */
-void rpentomino(cell_set& cells, int x, int y) {
-    cells.push_back( cell(x + 1, y) );
-    cells.push_back( cell(x + 2, y) );
-    cells.push_back( cell(x + 1, y + 1) );
-    cells.push_back( cell(x, y + 1) );
-    cells.push_back( cell(x + 1, y + 2) );
-}
-
-
 int main(int argc, char const *argv[])
 {
-    // Initial cells list
-    cell_set initial_cells;
+    if (argc == 1) {
+        std::cout << "Please provide a file!" << std::endl;
+        return -1;
+    }
+    std::string filename = argv[1];
 
-    // RPENTOMINOOOOOO
-    rpentomino(initial_cells, 140, 100);
+    ul::lc::LifeConfig config = ul::lc::readScript(filename);
 
-    // Another one why not
-    rpentomino(initial_cells, 170, 150);
+    // Grid options
+    int width = config.grid_property("width", 640);
+    int height = config.grid_property("height", 480);
+    std::cout << "Width: " << width << std::endl;
+    std::cout << "Height: " << height << std::endl;
 
     ul::SDL sdl;
-    ul::Window window(sdl, "Ultimate Life", 640, 480);
+    ul::Window window(sdl, "Ultimate Life", width, height);
     ul::Renderer renderer(window);
-    ul::life_loop(window, renderer, initial_cells, 2);
+    ul::life_loop(window, renderer, config);
 }

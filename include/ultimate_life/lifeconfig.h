@@ -14,7 +14,7 @@ namespace ul
         struct LCElem {
             bool prefabbed;
             std::string prefab_name;
-            cell cell;
+            cell elem_cell;
         };
 
         class LifeConfig

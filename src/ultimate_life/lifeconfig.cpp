@@ -20,20 +20,20 @@ void LifeConfig::__instantiatePrefab(ul::Grid& grid, LCElem& elem)
         throw s;
     }
     vector<LCElem> subelems = m_prefabs.at(elem.prefab_name);
-    int x = elem.cell.first;
-    int y = elem.cell.second;
+    int x = elem.elem_cell.first;
+    int y = elem.elem_cell.second;
     for (LCElem sube : subelems)
     {
         if (sube.prefabbed)
         {
             LCElem ne(sube);
-            ne.cell.first += x;
-            ne.cell.second += y;
+            ne.elem_cell.first += x;
+            ne.elem_cell.second += y;
             __instantiatePrefab(grid, ne);
         }
         else
         {
-            grid.aliven(x + sube.cell.first, y + sube.cell.second);
+            grid.aliven(x + sube.elem_cell.first, y + sube.elem_cell.second);
         }
     }
 }
@@ -48,7 +48,7 @@ void LifeConfig::instantiate(ul::Grid& g)
         }
         else
         {
-            g.aliven(elem.cell.first, elem.cell.second);
+            g.aliven(elem.elem_cell.first, elem.elem_cell.second);
         }
     }
 }
@@ -140,7 +140,7 @@ any LifeConfigVisitor::visitAbsprefab(lifescriptParser::AbsprefabContext *contex
     p.lcoptype = LC_OP_ELEM;
     p.elem.prefabbed = true;
     p.elem.prefab_name = context->IDENTIFIER()->getText();
-    p.elem.cell = any_cast<LCOp>(visitAbscell(context->abscell())).elem.cell;
+    p.elem.elem_cell = any_cast<LCOp>(visitAbscell(context->abscell())).elem.elem_cell;
     return p;
 }
 
@@ -149,7 +149,7 @@ any LifeConfigVisitor::visitAbscell(lifescriptParser::AbscellContext *context)
     LCOp p;
     p.lcoptype = LC_OP_ELEM;
     p.elem.prefabbed = false;
-    p.elem.cell = cell(
+    p.elem.elem_cell = cell(
         stoi(context->ABSNUM(0)->getText()),
         stoi(context->ABSNUM(1)->getText())
     );
@@ -173,7 +173,7 @@ any LifeConfigVisitor::visitRelprefab(lifescriptParser::RelprefabContext *contex
     elem.prefabbed = true;
     elem.prefab_name = context->IDENTIFIER()->getText();
     LCElem cellem = any_cast<LCElem>(visitRelcell(context->relcell()));
-    elem.cell = cellem.cell;
+    elem.elem_cell = cellem.elem_cell;
     return elem;
 }
 
@@ -181,7 +181,7 @@ any LifeConfigVisitor::visitRelcell(lifescriptParser::RelcellContext *context)
 {
     LCElem elem;
     elem.prefabbed = false;
-    elem.cell = cell(
+    elem.elem_cell = cell(
         stoi(context->RELNUM(0)->getText()),
         stoi(context->RELNUM(1)->getText())
     );

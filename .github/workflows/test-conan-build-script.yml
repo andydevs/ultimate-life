@@ -25,5 +25,5 @@ jobs:
       run: conan profile detect
 
     - name: Run install script
-      run: ./gimmeit.sh
+      run: sudo -E ./gimmeit.sh
 

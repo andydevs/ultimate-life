@@ -1,6 +1,9 @@
 Ultimate Life
 =================================================================================
 
+![Main Image](main.png)
+
+
 Conway's Game of Life, but bigger, better, badder
 
 

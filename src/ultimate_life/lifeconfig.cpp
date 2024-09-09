@@ -9,7 +9,6 @@ using namespace std;
 
 void LifeConfig::__instantiatePrefab(ul::Grid& grid, LCElem& elem)
 {
-    cout << "Process prefab: " << elem.prefab_name << " at " << elem.cell.first << "," << elem.cell.second << endl;
     if (!m_prefabs.count(elem.prefab_name))
     {
         std::stringstream s;
@@ -34,7 +33,6 @@ void LifeConfig::__instantiatePrefab(ul::Grid& grid, LCElem& elem)
         }
         else
         {
-            cout << "Aliven: " << x + sube.cell.first << "," << y + sube.cell.second << endl;
             grid.aliven(x + sube.cell.first, y + sube.cell.second);
         }
     }
@@ -187,7 +185,6 @@ any LifeConfigVisitor::visitRelcell(lifescriptParser::RelcellContext *context)
         stoi(context->RELNUM(0)->getText()),
         stoi(context->RELNUM(1)->getText())
     );
-    cout << "Relcel: " << elem.cell.first << "," << elem.cell.second << endl;
     return elem;
 }
 

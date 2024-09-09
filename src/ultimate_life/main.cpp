@@ -20,8 +20,6 @@ int main(int argc, char const *argv[])
     // Grid options
     int width = config.grid_property("width", 640);
     int height = config.grid_property("height", 480);
-    std::cout << "Width: " << width << std::endl;
-    std::cout << "Height: " << height << std::endl;
 
     ul::SDL sdl;
     ul::Window window(sdl, "Ultimate Life", width, height);

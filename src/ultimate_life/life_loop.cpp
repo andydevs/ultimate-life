@@ -9,7 +9,6 @@
 void ul::life_loop(ul::Window& window, ul::Renderer& renderer, ul::lc::LifeConfig& cfg) 
 {
     int cellsize = cfg.grid_property("cellsize", 5);
-    std::cout << "Cell size: " << cellsize << std::endl;
 
     // Init grid
     ul::Grid grid(window, cellsize);

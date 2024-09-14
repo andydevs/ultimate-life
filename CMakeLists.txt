@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED 17)
 
 find_package(SDL2)
 find_package(antlr4-runtime)
+find_package(GTest)
 include_directories(include)
 
 # Life script parser
@@ -18,3 +19,10 @@ add_executable(ultimate_life ${UL_EXE_SRC})
 target_include_directories(ultimate_life PUBLIC src/lifescript)
 target_link_libraries(ultimate_life SDL2::SDL2-static antlr4_static lifescript)
 install(TARGETS ultimate_life)
+
+# Ultimate Life Test Suite
+file(GLOB UL_TEST_SRC tests/*.cpp)
+add_executable(test_ultimate_life ${UL_TEST_SRC})
+target_link_libraries(test_ultimate_life gtest::gtest)
+include(GoogleTest)
+gtest_discover_tests(test_ultimate_life)

@@ -12,8 +12,8 @@ Right now we're only installing from source. You will need `conan` to run this.
 If you have Python, simply run `pip install conan` to install it. Once you do,
 create a default profile using `conan profile detect`.
 
-Run the `gimmeit.sh` shell in a terminal. It should set up the project, install
-dependencies, build, and install everything
+Run the `gimmeit.sh` script in a terminal. It should build and install everything
+you'd need (which would normally be just one script)
 
     $ pip install conan
     $ conan profile detect

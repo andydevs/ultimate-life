@@ -10,6 +10,7 @@ class UltimateLife(ConanFile):
     def build_requirements(self):
         self.tool_requires('cmake/[>=3.22]')
         self.tool_requires('antlr4/[>=4.13]')
+        self.test_requires('gtest/[>=1.13]')
 
     def requirements(self):
         self.requires("sdl/2.30.6")

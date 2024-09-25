@@ -1,7 +1,7 @@
 #pragma once
 #include <iterator>
 
-namespace ul 
+namespace ul::utils
 {
     template <typename T>
     struct range 
@@ -16,7 +16,7 @@ namespace ul
             using reference = T&;
             using iterator_category = std::input_iterator_tag;
 
-            iterator(T current, const T step);
+            iterator(T current, const T step, const T end);
             T& operator*();
             T* operator->();
             iterator& operator++();
@@ -26,6 +26,7 @@ namespace ul
         private:
             const T m_step;
             T m_current;
+            T m_end;
         };
 
         range(const T end);

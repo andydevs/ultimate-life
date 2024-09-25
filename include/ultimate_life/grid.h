@@ -1,6 +1,6 @@
 #pragma once
 #include <ultimate_life/window.h>
-#include <ultimate_life/range.h>
+#include <utils/range.h>
 
 namespace ul {
     class Grid {

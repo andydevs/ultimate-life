@@ -9,10 +9,10 @@ ul::Grid::Grid(Window& window, int cell_size):
     int grid_width = width();
     int grid_height = height();
     m_buffer = new char**[FRAMES];
-    for (int f : range<int>(FRAMES))
+    for (int f : utils::range<int>(FRAMES))
     {
         m_buffer[f] = new char*[grid_width];
-        for (int i : range<int>(grid_width))
+        for (int i : utils::range<int>(grid_width))
         {
             m_buffer[f][i] = new char[grid_height];
         }
@@ -21,9 +21,9 @@ ul::Grid::Grid(Window& window, int cell_size):
 
 ul::Grid::~Grid() {
     int grid_width = width();
-    for (int f : range<int>(FRAMES))
+    for (int f : utils::range<int>(FRAMES))
     {
-        for (int i : range<int>(grid_width))
+        for (int i : utils::range<int>(grid_width))
         {
             delete m_buffer[f][i];   
         }
@@ -56,9 +56,9 @@ int ul::Grid::neighbors(int i, int j) {
     int grid_width = width();
     int grid_height = height();
     int c = 0;
-    for (int u : range<int>(std::max(i - 1, 0), std::min(i + 2, grid_width)))
+    for (int u : utils::range<int>(std::max(i - 1, 0), std::min(i + 2, grid_width)))
     {
-        for (int v : range<int>(std::max(j - 1, 0), std::min(j + 2, grid_height)))
+        for (int v : utils::range<int>(std::max(j - 1, 0), std::min(j + 2, grid_height)))
         {
             if ((u != i || v != j) && m_buffer[m_frame][u][v])
             {
@@ -75,9 +75,9 @@ void ul::Grid::update() {
     int c;
 
     // Update
-    for (int i : range<int>(grid_width))
+    for (int i : utils::range<int>(grid_width))
     {
-        for (int j : range<int>(grid_height))
+        for (int j : utils::range<int>(grid_height))
         {
             c = neighbors(i, j);
             m_buffer[!m_frame][i][j] = (c == 3) || (c == 2 && cell(i, j));

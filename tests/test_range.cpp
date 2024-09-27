@@ -23,11 +23,10 @@ TYPED_TEST_SUITE(RangeIteratorTest, RangeTypes);
 TYPED_TEST(RangeIteratorTest, TestWithEndOnly) {
     this->end_ = (TypeParam)(TVALUE_END);
     range<TypeParam> r = range<TypeParam>(this->end_);
-    TypeParam i = 0;
     typename range<TypeParam>::iterator it = r.begin();
-    for (; it != r.end() && i < this->end_; ++it) {
-        EXPECT_EQ(i, *it);
-        ++i;
+    for (TypeParam i = 0; i < this->end_; ++i) {
+        EXPECT_EQ(*it, i);
+        ++it;
     }
     EXPECT_EQ(it, r.end());
 }
@@ -36,11 +35,10 @@ TYPED_TEST(RangeIteratorTest, TestWithStartAndEndOnly) {
     this->start_ = (TypeParam)(TVALUE_START);
     this->end_ = (TypeParam)(TVALUE_END);
     range<TypeParam> r = range<TypeParam>(this->start_, this->end_);
-    TypeParam i = this->start_;
     typename range<TypeParam>::iterator it = r.begin();
-    for (; it != r.end() && i < this->end_; ++it) {
-        EXPECT_EQ(i, *it);
-        ++i;
+    for (TypeParam i = this->start_; i < this->end_; ++i) {
+        EXPECT_EQ(*it, i);
+        ++it;
     }
     EXPECT_EQ(it, r.end());
 }
@@ -50,11 +48,11 @@ TYPED_TEST(RangeIteratorTest, TestWithStartEndStep) {
     this->end_ = (TypeParam)(TVALUE_END);
     this->step_ = (TypeParam)(TVALUE_STEP);
     range<TypeParam> r = range<TypeParam>(this->start_, this->end_, this->step_);
-    TypeParam i = this->start_;
+    TypeParam i;
     typename range<TypeParam>::iterator it = r.begin();
-    for (; it != r.end() && i < this->end_; ++it) {
-        EXPECT_EQ(i, *it);
-        i += this->step_;
+    for (TypeParam i = this->start_; i < this->end_; i += this->step_) {
+        EXPECT_EQ(*it, i);
+        ++it;
     }
     EXPECT_EQ(it, r.end());
 }

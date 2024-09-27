@@ -9,6 +9,14 @@ ul::utils::range<T>::iterator::iterator(T current, const T step, const T end)
 { }
 
 template<typename T>
+ul::utils::range<T>::iterator::iterator(const iterator& other)
+    : m_current(other.m_current),
+    m_step(other.m_step),
+    m_end(other.m_end)
+{ }
+
+
+template<typename T>
 T& ul::utils::range<T>::iterator::operator*() 
 { return m_current; }
 
@@ -32,6 +40,16 @@ ul::utils::range<T>::iterator::operator++(int)
     iterator tmp = *this; 
     ++(*this); 
     return tmp; 
+}
+
+template <typename T>
+typename ul::utils::range<T>::iterator& 
+ul::utils::range<T>::iterator::operator=(iterator& other)
+{
+    m_current = other.m_current;
+    m_step = other.m_step;
+    m_end = other.m_end;
+    return *this;
 }
 
 template <typename T>
@@ -64,9 +82,9 @@ typename ul::utils::range<T>::iterator
 ul::utils::range<T>::end() { return iterator(m_end, m_step, m_end); }
 
 // Concrete definitions for range
-template struct ul::utils::range<int>;
-template struct ul::utils::range<unsigned int>;
-template struct ul::utils::range<long>;
-template struct ul::utils::range<unsigned long>;
-template struct ul::utils::range<float>;
-template struct ul::utils::range<double>;
+template class ul::utils::range<int>;
+template class ul::utils::range<unsigned int>;
+template class ul::utils::range<long>;
+template class ul::utils::range<unsigned long>;
+template class ul::utils::range<float>;
+template class ul::utils::range<double>;

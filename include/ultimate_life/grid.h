@@ -1,6 +1,6 @@
 #pragma once
 #include <ultimate_life/window.h>
-#include <utils/range.h>
+#include <utils/range2d.h>
 
 namespace ul {
     class Grid {
@@ -20,5 +20,6 @@ namespace ul {
         void aliven(int i, int j);
         int neighbors(int i, int j);
         void update();
+        utils::range2d<int> grid_indeces();
     };
 };

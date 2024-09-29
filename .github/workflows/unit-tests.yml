@@ -22,7 +22,7 @@ jobs:
         run: sudo pip install conan
       
       - name: Initialize profile
-        run: sudo conan profile detect
+        run: conan profile detect
 
       - name: Install Dependencies
         run: conan install . --build=missing --conf tools.system.package_manager:mode=install

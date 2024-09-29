@@ -22,9 +22,10 @@ jobs:
         run: sudo pip install conan
       
       - name: Initialize profile
-        run: |
-          sudo conan profile detect
-          echo "CONAN_BUILD_TYPE=$(conan profile show | grep -E 'build_type=(\w+)' | head -n1 | sed 's/build_type=//')" >> $GITHUB_ENV
+        run: sudo conan profile detect
+
+      - name: Install Dependencies
+        run: conan install . --build=missing --conf tools.system.package_manager:mode=install
 
       - name: Configure CMake
         run: cmake --preset conan-release
@@ -33,4 +34,6 @@ jobs:
         run: cmake --build --preset conan-release
 
       - name: Run Unit Tests
-        run: /build/$CONAN_BUILD_TYPE/test_ultimate_life
+        run: |
+          CONAN_BUILD_TYPE=$(conan profile show | grep -E 'build_type=(\w+)' | head -n1 | sed 's/build_type=//')
+          ./build/$CONAN_BUILD_TYPE/test_ultimate_life

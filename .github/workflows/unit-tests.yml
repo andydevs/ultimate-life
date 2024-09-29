@@ -1,0 +1,36 @@
+name: Conan Build Script Testing
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+  
+jobs:
+  unit_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update APT
+        run: |
+          sudo apt update -y
+          sudo apt upgrade -y
+    
+      - name: Install Conan
+        run: sudo pip install conan
+      
+      - name: Initialize profile
+        run: |
+          sudo conan profile detect
+          echo "CONAN_BUILD_TYPE=$(conan profile show | grep -E 'build_type=(\w+)' | head -n1 | sed 's/build_type=//')" >> $GITHUB_ENV
+
+      - name: Configure CMake
+        run: cmake --preset conan-release
+
+      - name: Build Project
+        run: cmake --build --preset conan-release
+
+      - name: Run Unit Tests
+        run: /build/$CONAN_BUILD_TYPE/test_ultimate_life

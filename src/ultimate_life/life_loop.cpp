@@ -1,6 +1,5 @@
 #include <ultimate_life/life_loop.h>
 #include <ultimate_life/grid.h>
-#include <ultimate_life/range.h>
 #include <iostream>
 
 /**
@@ -18,18 +17,10 @@ void ul::life_loop(ul::Window& window, ul::Renderer& renderer, ul::lc::LifeConfi
     while (true) 
     {
         // Render current step
-        int s = grid.cell_size();
         renderer.clear();
-        for (size_t i : ul::range<size_t>(grid.width()))
-        {
-            for (size_t j : ul::range<size_t>(grid.height()))
-            {
-                if (grid.cell(i, j))
-                {
-                    renderer.cell(i*s, j*s, s);
-                }
-            }
-        }
+        for (auto [i, j] : grid.grid_indeces())
+            if (grid.cell(i, j))
+                renderer.cell(i*cellsize, j*cellsize, cellsize);
         renderer.update();
         
         // Get next step 

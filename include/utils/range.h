@@ -1,10 +1,10 @@
 #pragma once
 #include <iterator>
 
-namespace ul 
+namespace ul::utils
 {
     template <typename T>
-    struct range 
+    class range 
     {
     public:
         class iterator
@@ -16,16 +16,20 @@ namespace ul
             using reference = T&;
             using iterator_category = std::input_iterator_tag;
 
-            iterator(T current, const T step);
+            iterator(T current, const T step, const T end);
+            iterator(const iterator& other);
             T& operator*();
             T* operator->();
             iterator& operator++();
             iterator operator++(int);
+
+            iterator& operator=(iterator& other);
             bool operator== (const iterator& other) const;
             bool operator!= (const iterator& other) const; 
         private:
-            const T m_step;
+            T m_step;
             T m_current;
+            T m_end;
         };
 
         range(const T end);

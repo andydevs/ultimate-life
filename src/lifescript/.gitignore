@@ -4,3 +4,4 @@
 *.tokens
 .antlr/
 !*.g4
+generated/

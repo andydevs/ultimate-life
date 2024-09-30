@@ -1,0 +1,33 @@
+name: Unit Tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+  
+jobs:
+  unit_tests:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update APT
+        run: |
+          sudo apt update -y
+          sudo apt upgrade -y
+      - name: Install Conan
+        run: sudo pip install conan
+      - name: Initialize profile
+        run: sudo conan profile detect
+      - name: Install Dependencies
+        run: sudo conan install . --build=missing --conf tools.system.package_manager:mode=install
+      - name: Configure CMake
+        run: sudo cmake --preset conan-release
+      - name: Build Project
+        run: sudo cmake --build --preset conan-release
+      - name: Run Unit Tests
+        run: |
+          CONAN_BUILD_TYPE=$(sudo conan profile show | grep -E 'build_type=(\w+)' | head -n1 | sed 's/build_type=//')
+          ./build/$CONAN_BUILD_TYPE/test_ultimate_life

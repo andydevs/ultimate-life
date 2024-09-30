@@ -1,4 +1,6 @@
 #include <ultimate_life/grid.h>
+#include <utils/range2d.h>
+#include <utils/range.h>
 
 ul::Grid::Grid(Window& window, int cell_size): 
     FRAMES(2),
@@ -9,10 +11,10 @@ ul::Grid::Grid(Window& window, int cell_size):
     int grid_width = width();
     int grid_height = height();
     m_buffer = new char**[FRAMES];
-    for (int f : range<int>(FRAMES))
+    for (int f : utils::range<int>(FRAMES))
     {
         m_buffer[f] = new char*[grid_width];
-        for (int i : range<int>(grid_width))
+        for (int i : utils::range<int>(grid_width))
         {
             m_buffer[f][i] = new char[grid_height];
         }
@@ -21,9 +23,9 @@ ul::Grid::Grid(Window& window, int cell_size):
 
 ul::Grid::~Grid() {
     int grid_width = width();
-    for (int f : range<int>(FRAMES))
+    for (int f : utils::range<int>(FRAMES))
     {
-        for (int i : range<int>(grid_width))
+        for (int i : utils::range<int>(grid_width))
         {
             delete m_buffer[f][i];   
         }
@@ -53,37 +55,33 @@ void ul::Grid::aliven(int i, int j) {
 }
 
 int ul::Grid::neighbors(int i, int j) {
-    int grid_width = width();
-    int grid_height = height();
     int c = 0;
-    for (int u : range<int>(std::max(i - 1, 0), std::min(i + 2, grid_width)))
+    utils::range<int> rx(std::max(i - 1, 0), std::min(i + 2, width()));
+    utils::range<int> ry(std::max(j - 1, 0), std::min(j + 2, height()));
+    for (auto [u, v] : utils::range2d<int>(rx, ry)) 
     {
-        for (int v : range<int>(std::max(j - 1, 0), std::min(j + 2, grid_height)))
+        if ((u != i || v != j) && m_buffer[m_frame][u][v])
         {
-            if ((u != i || v != j) && m_buffer[m_frame][u][v])
-            {
-                c++;
-            }
+            c++;
         }
     }
     return c;
 }
 
 void ul::Grid::update() {
-    int grid_width = width();
-    int grid_height = height();
-    int c;
-
-    // Update
-    for (int i : range<int>(grid_width))
+    for (auto [i, j] : grid_indeces())
     {
-        for (int j : range<int>(grid_height))
-        {
-            c = neighbors(i, j);
-            m_buffer[!m_frame][i][j] = (c == 3) || (c == 2 && cell(i, j));
-        }
+        int c = neighbors(i, j);
+        m_buffer[!m_frame][i][j] = (c == 3) || (c == 2 && cell(i, j));
     }
 
     // Swap buffers
     m_frame = !m_frame;
+}
+
+ul::utils::range2d<int> ul::Grid::grid_indeces()
+{
+    utils::range<int> rx(width());
+    utils::range<int> ry(height());
+    return utils::range2d<int>(rx, ry);
 }

@@ -19,7 +19,7 @@ jobs:
           sudo apt upgrade -y
     
       - name: Install Conan
-        run: sudo pip install conan
+        run: pip install conan
       
       - name: Initialize profile
         run: conan profile detect

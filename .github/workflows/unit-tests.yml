@@ -35,5 +35,5 @@ jobs:
 
       - name: Run Unit Tests
         run: |
-          CONAN_BUILD_TYPE=$(conan profile show | grep -E 'build_type=(\w+)' | head -n1 | sed 's/build_type=//')
+          CONAN_BUILD_TYPE=$(sudo conan profile show | grep -E 'build_type=(\w+)' | head -n1 | sed 's/build_type=//')
           ./build/$CONAN_BUILD_TYPE/test_ultimate_life

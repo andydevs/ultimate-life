@@ -1,4 +1,4 @@
-name: Conan Build Script Testing
+name: Conan Install Script Testing
 
 on:
   push:
@@ -8,35 +8,30 @@ on:
   workflow_dispatch:
   
 jobs:
-  test_build_on_linux:
+  test_install_on_linux:
+    name: Install on Linux
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Update APT
         run: |
           sudo apt update -y
           sudo apt upgrade -y
-    
       - name: Install Conan
         run: sudo pip install conan
-      
       - name: Initialize profile
         run: sudo conan profile detect
-
       - name: Run install script
         run: sudo ./gimmeit.sh
 
-  test_build_on_mac:
+  test_install_on_mac:
+    name: Install on Mac
     runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
-
       - name: Install Conan
         run: sudo python3 -m pip install conan
-
       - name: Initialize profile
         run: sudo conan profile detect
-
       - name: Run install script
         run: sudo ./gimmeit.sh

@@ -1,4 +1,4 @@
-name: Conan Build Script Testing
+name: Unit Tests
 
 on:
   push:

@@ -1,7 +1,7 @@
 #pragma once
 #include <ultimate_life/window.h>
 #include <ultimate_life/renderer.h>
-#include <ultimate_life/lifeconfig.h>
+#include <lifeconfig/lifeconfig.h>
 #include <vector>
 
 namespace ul

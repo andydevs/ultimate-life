@@ -37,21 +37,21 @@ add_library(lifescript ${LS_PARSER_SRC})
 add_dependencies(lifescript lifescript_parser)
 target_link_libraries(lifescript antlr4_static)
 
+# Life config
+file(GLOB LC_SRC ${PROJECT_SOURCE_DIR}/src/lifeconfig/*.cpp)
+add_library(lifeconfig ${LC_SRC})
+target_include_directories(lifeconfig PUBLIC src/lifescript/generated)
+target_link_libraries(lifeconfig lifescript SDL2::SDL2-static)
+
 # Ultimate Life EXE
 file(GLOB UL_EXE_SRC src/ultimate_life/*.cpp)
 add_executable(ultimate_life ${UL_EXE_SRC})
-target_include_directories(ultimate_life PUBLIC src/lifescript/generated)
-target_link_libraries(ultimate_life 
-    SDL2::SDL2-static 
-    utils
-    lifescript)
+target_link_libraries(ultimate_life utils lifeconfig SDL2::SDL2-static)
 install(TARGETS ultimate_life)
 
 # Ultimate Life Test Suite
 file(GLOB UL_TEST_SRC tests/*.cpp)
 add_executable(test_ultimate_life ${UL_TEST_SRC})
-target_link_libraries(test_ultimate_life 
-    gtest::gtest
-    utils)
+target_link_libraries(test_ultimate_life gtest::gtest utils)
 include(GoogleTest)
 gtest_discover_tests(test_ultimate_life)

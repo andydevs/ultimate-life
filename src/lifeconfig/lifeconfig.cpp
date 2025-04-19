@@ -1,4 +1,4 @@
-#include <ultimate_life/lifeconfig.h>
+#include <lifeconfig/lifeconfig.h>
 #include <lifescriptLexer.h>
 #include <lifescriptParser.h>
 #include <antlr4-runtime.h>

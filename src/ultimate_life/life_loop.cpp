@@ -5,7 +5,7 @@
 /**
  * Run life loop on window and renderer
  */
-void ul::life_loop(ul::Window& window, ul::Renderer& renderer, ul::lc::LifeConfig& cfg) 
+void ul::life_loop(ul::Window& window, ul::Renderer& renderer, ul::ls::LifeScript& cfg) 
 {
     int cellsize = cfg.grid_property("cellsize", 5);
 

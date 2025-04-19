@@ -1,7 +1,5 @@
-*.cpp
-*.h
 *.interp
 *.tokens
 .antlr/
-!*.g4
 generated/
+!*.g4

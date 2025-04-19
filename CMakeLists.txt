@@ -23,7 +23,7 @@ set(LS_PARSER_SRC
 foreach(ls_parser_file ${LS_PARSER_SRC})
     set_property(SOURCE ${ls_parser_file} PROPERTY GENERATED TRUE)
 endforeach(ls_parser_file ${LS_PARSER_SRC})
-add_custom_target(lifescript_parser DEPENDS ${LS_PARSER_SRC})
+add_custom_target(lifescript_parser_files DEPENDS ${LS_PARSER_SRC})
 add_custom_command(OUTPUT ${LS_PARSER_SRC}
                    COMMAND
                    test -d generated || mkdir generated
@@ -33,20 +33,16 @@ add_custom_command(OUTPUT ${LS_PARSER_SRC}
                    ${LS_PARSER_PATH})
 
 # lifescript 
-add_library(lifescript ${LS_PARSER_SRC})
-add_dependencies(lifescript lifescript_parser)
-target_link_libraries(lifescript antlr4_static)
-
-# Life config
-file(GLOB LC_SRC ${PROJECT_SOURCE_DIR}/src/lifeconfig/*.cpp)
-add_library(lifeconfig ${LC_SRC})
-target_include_directories(lifeconfig PUBLIC src/lifescript/generated)
-target_link_libraries(lifeconfig lifescript SDL2::SDL2-static)
+file(GLOB LC_SRC ${PROJECT_SOURCE_DIR}/src/lifescript/*.cpp)
+add_library(lifescript ${LS_PARSER_SRC} ${LC_SRC})
+target_include_directories(lifescript PUBLIC src/lifescript/generated)
+add_dependencies(lifescript lifescript_parser_files)
+target_link_libraries(lifescript antlr4_static SDL2::SDL2-static)
 
 # Ultimate Life EXE
 file(GLOB UL_EXE_SRC src/ultimate_life/*.cpp)
 add_executable(ultimate_life ${UL_EXE_SRC})
-target_link_libraries(ultimate_life utils lifeconfig SDL2::SDL2-static)
+target_link_libraries(ultimate_life utils lifescript SDL2::SDL2-static)
 install(TARGETS ultimate_life)
 
 # Ultimate Life Test Suite

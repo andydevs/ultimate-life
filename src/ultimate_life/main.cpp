@@ -2,7 +2,7 @@
 #include <ultimate_life/window.h>
 #include <ultimate_life/renderer.h>
 #include <ultimate_life/life_loop.h>
-#include <lifeconfig/lifeconfig.h>
+#include <lifescript/lifescript.h>
 #include <iostream>
 #include <vector>
 
@@ -15,7 +15,7 @@ int main(int argc, char const *argv[])
     }
     std::string filename = argv[1];
 
-    ul::lc::LifeConfig config = ul::lc::readScript(filename);
+    ul::ls::LifeScript config = ul::ls::readScript(filename);
 
     // Grid options
     int width = config.grid_property("width", 640);

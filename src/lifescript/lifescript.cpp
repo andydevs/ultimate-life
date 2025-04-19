@@ -1,13 +1,13 @@
-#include <lifeconfig/lifeconfig.h>
+#include <lifescript/lifescript.h>
 #include <lifescriptLexer.h>
 #include <lifescriptParser.h>
 #include <antlr4-runtime.h>
 #include <fstream>
 
-using namespace ul::lc;
+using namespace ul::ls;
 using namespace std;
 
-void LifeConfig::__instantiatePrefab(ul::Grid& grid, LCElem& elem)
+void LifeScript::__instantiatePrefab(ul::Grid& grid, LSElem& elem)
 {
     if (!m_prefabs.count(elem.prefab_name))
     {
@@ -19,14 +19,14 @@ void LifeConfig::__instantiatePrefab(ul::Grid& grid, LCElem& elem)
         }
         throw s;
     }
-    vector<LCElem> subelems = m_prefabs.at(elem.prefab_name);
+    vector<LSElem> subelems = m_prefabs.at(elem.prefab_name);
     int x = elem.elem_cell.first;
     int y = elem.elem_cell.second;
-    for (LCElem sube : subelems)
+    for (LSElem sube : subelems)
     {
         if (sube.prefabbed)
         {
-            LCElem ne(sube);
+            LSElem ne(sube);
             ne.elem_cell.first += x;
             ne.elem_cell.second += y;
             __instantiatePrefab(grid, ne);
@@ -38,9 +38,9 @@ void LifeConfig::__instantiatePrefab(ul::Grid& grid, LCElem& elem)
     }
 }
 
-void LifeConfig::instantiate(ul::Grid& g) 
+void LifeScript::instantiate(ul::Grid& g) 
 {
-    for (LCElem elem: m_elems)
+    for (LSElem elem: m_elems)
     {        
         if (elem.prefabbed)
         {
@@ -53,7 +53,7 @@ void LifeConfig::instantiate(ul::Grid& g)
     }
 }
 
-int LifeConfig::grid_property(const string& name, int default_value) 
+int LifeScript::grid_property(const string& name, int default_value) 
 { 
     if (m_grid_config.count(name)) 
     {
@@ -65,30 +65,30 @@ int LifeConfig::grid_property(const string& name, int default_value)
     }
 };
 
-void LifeConfig::set_grid_property(const string& name, int value) 
+void LifeScript::set_grid_property(const string& name, int value) 
 {
     m_grid_config.insert_or_assign(name, value);
 };
 
-void LifeConfig::add_prefab(const string& name, vector<LCElem>& elems) 
+void LifeScript::add_prefab(const string& name, vector<LSElem>& elems) 
 {
     m_prefabs.insert_or_assign(name, elems);
 };
 
-void LifeConfig::add_elem(LCElem elem) 
+void LifeScript::add_elem(LSElem elem) 
 {
     m_elems.push_back(elem);
 };
 
 // ------------------------------------------------ Prefabdef Visitor DEF -------------------------------------------------
 
-std::vector<LCElem>& PrefabdefVisitor::elems() { return m_elems; }
+std::vector<LSElem>& PrefabdefVisitor::elems() { return m_elems; }
 
 any PrefabdefVisitor::visitPrefelems(lifescriptParser::PrefelemsContext *context)
 {
     for (antlr4::tree::ParseTree *elem : context->children) 
     {
-        LCElem lcelem = any_cast<LCElem>(elem->accept(this));
+        LSElem lcelem = any_cast<LSElem>(elem->accept(this));
         m_elems.push_back(lcelem);
     }
     return nullopt;
@@ -96,17 +96,17 @@ any PrefabdefVisitor::visitPrefelems(lifescriptParser::PrefelemsContext *context
 
 any PrefabdefVisitor::visitRelprefab(lifescriptParser::RelprefabContext *context)
 {
-    LCElem elem;
+    LSElem elem;
     elem.prefabbed = true;
     elem.prefab_name = context->IDENTIFIER()->getText();
-    LCElem cellem = any_cast<LCElem>(visitRelcell(context->relcell()));
+    LSElem cellem = any_cast<LSElem>(visitRelcell(context->relcell()));
     elem.elem_cell = cellem.elem_cell;
     return elem;
 }
 
 any PrefabdefVisitor::visitRelcell(lifescriptParser::RelcellContext *context)
 {
-    LCElem elem;
+    LSElem elem;
     elem.prefabbed = false;
     elem.elem_cell = cell(
         stoi(context->RELNUM(0)->getText()),
@@ -118,53 +118,53 @@ any PrefabdefVisitor::visitRelcell(lifescriptParser::RelcellContext *context)
 
 // ------------------------------------------------ LifeScript Visitor DEF ------------------------------------------------
 
-LifeConfigVisitor::LifeConfigVisitor(LifeConfig& lc): lifescriptBaseVisitor(), m_lc(lc) {}
+LifeScriptVisitor::LifeScriptVisitor(LifeScript& lc): lifescriptBaseVisitor(), m_ls(lc) {}
 
-any LifeConfigVisitor::visitGridstmt(lifescriptParser::GridstmtContext *context)
+any LifeScriptVisitor::visitGridstmt(lifescriptParser::GridstmtContext *context)
 {
     std::string property_name = context->IDENTIFIER()->getText();
     int property_value = stoi(context->ABSNUM()->getText());
-    m_lc.set_grid_property(property_name, property_value);
+    m_ls.set_grid_property(property_name, property_value);
     return nullopt;
 }
 
-any LifeConfigVisitor::visitPrefdef(lifescriptParser::PrefdefContext *context)
+any LifeScriptVisitor::visitPrefdef(lifescriptParser::PrefdefContext *context)
 {
     std::string prefab_name = context->IDENTIFIER()->getText();
     PrefabdefVisitor prefab_visitor;
     context->prefelems()->accept(&prefab_visitor);
-    m_lc.add_prefab(prefab_name, prefab_visitor.elems());
+    m_ls.add_prefab(prefab_name, prefab_visitor.elems());
     return nullopt;
 };
 
-any LifeConfigVisitor::visitAbsprefab(lifescriptParser::AbsprefabContext *context)
+any LifeScriptVisitor::visitAbsprefab(lifescriptParser::AbsprefabContext *context)
 {
-    LCElem elem;
+    LSElem elem;
     elem.prefabbed = true;
     elem.prefab_name = context->IDENTIFIER()->getText();
     elem.elem_cell = cell(
         stoi(context->abscell()->ABSNUM(0)->getText()),
         stoi(context->abscell()->ABSNUM(1)->getText())
     );
-    m_lc.add_elem(elem);
+    m_ls.add_elem(elem);
     return nullopt;
 }
 
-any LifeConfigVisitor::visitAbscell(lifescriptParser::AbscellContext *context)
+any LifeScriptVisitor::visitAbscell(lifescriptParser::AbscellContext *context)
 {
-    LCElem elem;
+    LSElem elem;
     elem.prefabbed = false;
     elem.elem_cell = cell(
         stoi(context->ABSNUM(0)->getText()),
         stoi(context->ABSNUM(1)->getText())
     );
-    m_lc.add_elem(elem);
+    m_ls.add_elem(elem);
     return nullopt;
 }
 
 // ----------------------------------------------- READSCRIPT DEF ----------------------------------------------
 
-LifeConfig ul::lc::readScript(string& filename)
+LifeScript ul::ls::readScript(string& filename)
 {
     // Open script file
     ifstream script(filename);
@@ -181,8 +181,8 @@ LifeConfig ul::lc::readScript(string& filename)
     lifescriptParser parser(&tokens);
 
     // Convert to LifeConfig
-    LifeConfig config;
-    LifeConfigVisitor visitor(config);
+    LifeScript config;
+    LifeScriptVisitor visitor(config);
     parser.script()->accept(&visitor);
 
     // Return LifeConfig

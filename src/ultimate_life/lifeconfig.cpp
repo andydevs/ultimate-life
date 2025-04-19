@@ -104,70 +104,21 @@ void LCOp::apply(LifeConfig& cfg)
     }
 }
 
-// ------------------------------------------------ VISITOR DEF ------------------------------------------------
+// ------------------------------------------------ Prefabdef Visitor DEF -------------------------------------------------
 
-any LifeConfigVisitor::visitScript(lifescriptParser::ScriptContext *context)
-{
-    LifeConfig lc;
-    for (int i = 0; i < context->children.size(); ++i) {
-        LCOp p = any_cast<LCOp>(context->children[i]->accept(this));
-        p.apply(lc);
-    }
-    return lc;
-}
+std::vector<LCElem>& PrefabdefVisitor::elems() { return m_elems; }
 
-any LifeConfigVisitor::visitGridstmt(lifescriptParser::GridstmtContext *context)
+any PrefabdefVisitor::visitPrefelems(lifescriptParser::PrefelemsContext *context)
 {
-    LCOp p;
-    p.lcoptype = LC_OP_GRIDSTMT;
-    p.property_name = context->IDENTIFIER()->getText();
-    p.property_value = stoi(context->ABSNUM()->getText());
-    return p;
-}
-
-any LifeConfigVisitor::visitPrefdef(lifescriptParser::PrefdefContext *context)
-{
-    LCOp p;
-    p.lcoptype = LC_OP_PREFABDEF;
-    p.prefab_name = context->IDENTIFIER()->getText();
-    p.prefab_elems = any_cast<vector<LCElem>>(visitPrefelems(context->prefelems()));
-    return p;
-};
-
-any LifeConfigVisitor::visitAbsprefab(lifescriptParser::AbsprefabContext *context)
-{
-    LCOp p;
-    p.lcoptype = LC_OP_ELEM;
-    p.elem.prefabbed = true;
-    p.elem.prefab_name = context->IDENTIFIER()->getText();
-    p.elem.elem_cell = any_cast<LCOp>(visitAbscell(context->abscell())).elem.elem_cell;
-    return p;
-}
-
-any LifeConfigVisitor::visitAbscell(lifescriptParser::AbscellContext *context)
-{
-    LCOp p;
-    p.lcoptype = LC_OP_ELEM;
-    p.elem.prefabbed = false;
-    p.elem.elem_cell = cell(
-        stoi(context->ABSNUM(0)->getText()),
-        stoi(context->ABSNUM(1)->getText())
-    );
-    return p;
-}
-
-any LifeConfigVisitor::visitPrefelems(lifescriptParser::PrefelemsContext *context)
-{
-    vector<LCElem> elems;
-    LCElem elem;
-    for (antlr4::tree::ParseTree *e : context->children)
+    for (antlr4::tree::ParseTree *elem : context->children) 
     {
-        elems.push_back(any_cast<LCElem>(e->accept(this)));
+        LCElem lcelem = any_cast<LCElem>(elem->accept(this));
+        m_elems.push_back(lcelem);
     }
-    return elems;
+    return nullopt;
 }
 
-any LifeConfigVisitor::visitRelprefab(lifescriptParser::RelprefabContext *context)
+any PrefabdefVisitor::visitRelprefab(lifescriptParser::RelprefabContext *context)
 {
     LCElem elem;
     elem.prefabbed = true;
@@ -177,7 +128,7 @@ any LifeConfigVisitor::visitRelprefab(lifescriptParser::RelprefabContext *contex
     return elem;
 }
 
-any LifeConfigVisitor::visitRelcell(lifescriptParser::RelcellContext *context)
+any PrefabdefVisitor::visitRelcell(lifescriptParser::RelcellContext *context)
 {
     LCElem elem;
     elem.prefabbed = false;
@@ -186,6 +137,53 @@ any LifeConfigVisitor::visitRelcell(lifescriptParser::RelcellContext *context)
         stoi(context->RELNUM(1)->getText())
     );
     return elem;
+}
+
+
+// ------------------------------------------------ LifeScript Visitor DEF ------------------------------------------------
+
+LifeConfigVisitor::LifeConfigVisitor(LifeConfig& lc): lifescriptBaseVisitor(), m_lc(lc) {}
+
+any LifeConfigVisitor::visitGridstmt(lifescriptParser::GridstmtContext *context)
+{
+    std::string property_name = context->IDENTIFIER()->getText();
+    int property_value = stoi(context->ABSNUM()->getText());
+    m_lc.set_grid_property(property_name, property_value);
+    return nullopt;
+}
+
+any LifeConfigVisitor::visitPrefdef(lifescriptParser::PrefdefContext *context)
+{
+    std::string prefab_name = context->IDENTIFIER()->getText();
+    PrefabdefVisitor prefab_visitor;
+    context->prefelems()->accept(&prefab_visitor);
+    m_lc.add_prefab(prefab_name, prefab_visitor.elems());
+    return nullopt;
+};
+
+any LifeConfigVisitor::visitAbsprefab(lifescriptParser::AbsprefabContext *context)
+{
+    LCElem elem;
+    elem.prefabbed = true;
+    elem.prefab_name = context->IDENTIFIER()->getText();
+    elem.elem_cell = cell(
+        stoi(context->abscell()->ABSNUM(0)->getText()),
+        stoi(context->abscell()->ABSNUM(1)->getText())
+    );
+    m_lc.add_elem(elem);
+    return nullopt;
+}
+
+any LifeConfigVisitor::visitAbscell(lifescriptParser::AbscellContext *context)
+{
+    LCElem elem;
+    elem.prefabbed = false;
+    elem.elem_cell = cell(
+        stoi(context->ABSNUM(0)->getText()),
+        stoi(context->ABSNUM(1)->getText())
+    );
+    m_lc.add_elem(elem);
+    return nullopt;
 }
 
 // ----------------------------------------------- READSCRIPT DEF ----------------------------------------------
@@ -207,8 +205,9 @@ LifeConfig ul::lc::readScript(string& filename)
     lifescriptParser parser(&tokens);
 
     // Convert to LifeConfig
-    LifeConfigVisitor visitor;
-    LifeConfig config = any_cast<LifeConfig>(visitor.visitScript(parser.script()));
+    LifeConfig config;
+    LifeConfigVisitor visitor(config);
+    parser.script()->accept(&visitor);
 
     // Return LifeConfig
     return config;

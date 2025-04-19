@@ -43,15 +43,25 @@ namespace ul
             LCElem elem;
         };
 
-        class LifeConfigVisitor : lifescriptBaseVisitor
+        class PrefabdefVisitor : public lifescriptBaseVisitor
         {
+        private:
+            std::vector<LCElem> m_elems;
         public:
-            std::any visitScript(lifescriptParser::ScriptContext *context) override;
+            std::vector<LCElem>& elems();
+            std::any visitPrefelems(lifescriptParser::PrefelemsContext *context) override;
+            std::any visitRelprefab(lifescriptParser::RelprefabContext *context) override;
+            std::any visitRelcell(lifescriptParser::RelcellContext *context) override;
+        };
+
+        class LifeConfigVisitor : public lifescriptBaseVisitor
+        {
+        private:
+            LifeConfig& m_lc;
+        public:
+            LifeConfigVisitor(LifeConfig& lc);
             std::any visitGridstmt(lifescriptParser::GridstmtContext *context) override;
             std::any visitPrefdef(lifescriptParser::PrefdefContext *context) override;
-            std::any visitRelprefab(lifescriptParser::RelprefabContext *context) override;
-            std::any visitPrefelems(lifescriptParser::PrefelemsContext *context) override;
-            std::any visitRelcell(lifescriptParser::RelcellContext *context) override;
             std::any visitAbscell(lifescriptParser::AbscellContext *context) override;
             std::any visitAbsprefab(lifescriptParser::AbsprefabContext *context) override;
         };

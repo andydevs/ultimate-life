@@ -80,30 +80,6 @@ void LifeConfig::add_elem(LCElem elem)
     m_elems.push_back(elem);
 };
 
-// ----------------------------------------------- OPERATION DEF -----------------------------------------------
-
-const int LC_OP_GRIDSTMT = 1;
-const int LC_OP_PREFABDEF = 2;
-const int LC_OP_ELEM = 4;
-
-void LCOp::apply(LifeConfig& cfg)
-{
-    switch (lcoptype)
-    {
-    case LC_OP_GRIDSTMT:
-        cfg.set_grid_property(property_name, property_value);
-        break;
-    case LC_OP_PREFABDEF:
-        cfg.add_prefab(prefab_name, prefab_elems);
-        break;
-    case LC_OP_ELEM:
-        cfg.add_elem(elem);
-        break;
-    default:
-        break;
-    }
-}
-
 // ------------------------------------------------ Prefabdef Visitor DEF -------------------------------------------------
 
 std::vector<LCElem>& PrefabdefVisitor::elems() { return m_elems; }

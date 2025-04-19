@@ -32,17 +32,6 @@ namespace ul
             void __instantiatePrefab(ul::Grid& grid, LCElem& elem);
         };
 
-        struct LCOp
-        {
-            void apply(LifeConfig& cfg);
-            int lcoptype;
-            std::string property_name;
-            int property_value;
-            std::string prefab_name;
-            std::vector<LCElem> prefab_elems;
-            LCElem elem;
-        };
-
         class PrefabdefVisitor : public lifescriptBaseVisitor
         {
         private:

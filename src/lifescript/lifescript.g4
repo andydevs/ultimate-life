@@ -1,4 +1,4 @@
-grammar lifescript;
+grammar LifeScript;
 options { language=Cpp; }
 
 script : (prefdef | gridstmt | abscell | absprefab)* ;

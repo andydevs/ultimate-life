@@ -12,8 +12,8 @@ include_directories(include)
 file(GLOB UTILS_LIB_SRC src/utils/*.cpp)
 add_library(utils ${UTILS_LIB_SRC})
 
-# Life script parser
-set(LS_PARSER_NAME lifescript)
+# Life Script
+set(LS_PARSER_NAME LifeScript)
 set(LS_PARSER_PATH ${PROJECT_SOURCE_DIR}/src/lifescript)
 set(LS_PARSER_SRC 
     ${LS_PARSER_PATH}/generated/${LS_PARSER_NAME}Lexer.cpp
@@ -23,20 +23,17 @@ set(LS_PARSER_SRC
 foreach(ls_parser_file ${LS_PARSER_SRC})
     set_property(SOURCE ${ls_parser_file} PROPERTY GENERATED TRUE)
 endforeach(ls_parser_file ${LS_PARSER_SRC})
-add_custom_target(lifescript_parser_files DEPENDS ${LS_PARSER_SRC})
+# add_custom_target(lifescript_parser_files DEPENDS ${LS_PARSER_SRC})
 add_custom_command(OUTPUT ${LS_PARSER_SRC}
                    COMMAND
                    test -d generated || mkdir generated
                    COMMAND 
-                   antlr4 -no-listener -visitor lifescript.g4 -o generated/
+                   antlr4 -no-listener -visitor ${LS_PARSER_NAME}.g4 -o generated/
                    WORKING_DIRECTORY
                    ${LS_PARSER_PATH})
-
-# lifescript 
 file(GLOB LC_SRC ${PROJECT_SOURCE_DIR}/src/lifescript/*.cpp)
 add_library(lifescript ${LS_PARSER_SRC} ${LC_SRC})
 target_include_directories(lifescript PUBLIC src/lifescript/generated)
-add_dependencies(lifescript lifescript_parser_files)
 target_link_libraries(lifescript antlr4_static SDL2::SDL2-static)
 
 # Ultimate Life EXE

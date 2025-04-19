@@ -1,6 +1,6 @@
 #pragma once
 #include <ultimate_life/grid.h>
-#include <lifescriptBaseVisitor.h>
+#include <LifeScriptBaseVisitor.h>
 #include <vector>
 #include <string>
 #include <map>
@@ -32,27 +32,27 @@ namespace ul
             void __instantiatePrefab(ul::Grid& grid, LSElem& elem);
         };
 
-        class PrefabdefVisitor : public lifescriptBaseVisitor
+        class PrefabdefVisitor : public LifeScriptBaseVisitor
         {
         private:
             std::vector<LSElem> m_elems;
         public:
             std::vector<LSElem>& elems();
-            std::any visitPrefelems(lifescriptParser::PrefelemsContext *context) override;
-            std::any visitRelprefab(lifescriptParser::RelprefabContext *context) override;
-            std::any visitRelcell(lifescriptParser::RelcellContext *context) override;
+            std::any visitPrefelems(LifeScriptParser::PrefelemsContext *context) override;
+            std::any visitRelprefab(LifeScriptParser::RelprefabContext *context) override;
+            std::any visitRelcell(LifeScriptParser::RelcellContext *context) override;
         };
 
-        class LifeScriptVisitor : public lifescriptBaseVisitor
+        class LifeScriptConverterVisitor : public LifeScriptBaseVisitor
         {
         private:
             LifeScript& m_ls;
         public:
-            LifeScriptVisitor(LifeScript& ls);
-            std::any visitGridstmt(lifescriptParser::GridstmtContext *context) override;
-            std::any visitPrefdef(lifescriptParser::PrefdefContext *context) override;
-            std::any visitAbscell(lifescriptParser::AbscellContext *context) override;
-            std::any visitAbsprefab(lifescriptParser::AbsprefabContext *context) override;
+            LifeScriptConverterVisitor(LifeScript& ls);
+            std::any visitGridstmt(LifeScriptParser::GridstmtContext *context) override;
+            std::any visitPrefdef(LifeScriptParser::PrefdefContext *context) override;
+            std::any visitAbscell(LifeScriptParser::AbscellContext *context) override;
+            std::any visitAbsprefab(LifeScriptParser::AbsprefabContext *context) override;
         };
 
         LifeScript readScript(std::string& filename);

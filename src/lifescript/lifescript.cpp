@@ -1,6 +1,6 @@
 #include <lifescript/lifescript.h>
-#include <lifescriptLexer.h>
-#include <lifescriptParser.h>
+#include <LifeScriptLexer.h>
+#include <LifeScriptParser.h>
 #include <antlr4-runtime.h>
 #include <fstream>
 
@@ -84,7 +84,7 @@ void LifeScript::add_elem(LSElem elem)
 
 std::vector<LSElem>& PrefabdefVisitor::elems() { return m_elems; }
 
-any PrefabdefVisitor::visitPrefelems(lifescriptParser::PrefelemsContext *context)
+any PrefabdefVisitor::visitPrefelems(LifeScriptParser::PrefelemsContext *context)
 {
     for (antlr4::tree::ParseTree *elem : context->children) 
     {
@@ -94,7 +94,7 @@ any PrefabdefVisitor::visitPrefelems(lifescriptParser::PrefelemsContext *context
     return nullopt;
 }
 
-any PrefabdefVisitor::visitRelprefab(lifescriptParser::RelprefabContext *context)
+any PrefabdefVisitor::visitRelprefab(LifeScriptParser::RelprefabContext *context)
 {
     LSElem elem;
     elem.prefabbed = true;
@@ -104,7 +104,7 @@ any PrefabdefVisitor::visitRelprefab(lifescriptParser::RelprefabContext *context
     return elem;
 }
 
-any PrefabdefVisitor::visitRelcell(lifescriptParser::RelcellContext *context)
+any PrefabdefVisitor::visitRelcell(LifeScriptParser::RelcellContext *context)
 {
     LSElem elem;
     elem.prefabbed = false;
@@ -118,9 +118,9 @@ any PrefabdefVisitor::visitRelcell(lifescriptParser::RelcellContext *context)
 
 // ------------------------------------------------ LifeScript Visitor DEF ------------------------------------------------
 
-LifeScriptVisitor::LifeScriptVisitor(LifeScript& lc): lifescriptBaseVisitor(), m_ls(lc) {}
+LifeScriptConverterVisitor::LifeScriptConverterVisitor(LifeScript& ls): m_ls(ls) {}
 
-any LifeScriptVisitor::visitGridstmt(lifescriptParser::GridstmtContext *context)
+any LifeScriptConverterVisitor::visitGridstmt(LifeScriptParser::GridstmtContext *context)
 {
     std::string property_name = context->IDENTIFIER()->getText();
     int property_value = stoi(context->ABSNUM()->getText());
@@ -128,7 +128,7 @@ any LifeScriptVisitor::visitGridstmt(lifescriptParser::GridstmtContext *context)
     return nullopt;
 }
 
-any LifeScriptVisitor::visitPrefdef(lifescriptParser::PrefdefContext *context)
+any LifeScriptConverterVisitor::visitPrefdef(LifeScriptParser::PrefdefContext *context)
 {
     std::string prefab_name = context->IDENTIFIER()->getText();
     PrefabdefVisitor prefab_visitor;
@@ -137,7 +137,7 @@ any LifeScriptVisitor::visitPrefdef(lifescriptParser::PrefdefContext *context)
     return nullopt;
 };
 
-any LifeScriptVisitor::visitAbsprefab(lifescriptParser::AbsprefabContext *context)
+any LifeScriptConverterVisitor::visitAbsprefab(LifeScriptParser::AbsprefabContext *context)
 {
     LSElem elem;
     elem.prefabbed = true;
@@ -150,7 +150,7 @@ any LifeScriptVisitor::visitAbsprefab(lifescriptParser::AbsprefabContext *contex
     return nullopt;
 }
 
-any LifeScriptVisitor::visitAbscell(lifescriptParser::AbscellContext *context)
+any LifeScriptConverterVisitor::visitAbscell(LifeScriptParser::AbscellContext *context)
 {
     LSElem elem;
     elem.prefabbed = false;
@@ -176,13 +176,13 @@ LifeScript ul::ls::readScript(string& filename)
 
     // Parse using ANTLR
     antlr4::ANTLRInputStream input(script);
-    lifescriptLexer lexer(&input);
+    LifeScriptLexer lexer(&input);
     antlr4::CommonTokenStream tokens(&lexer);
-    lifescriptParser parser(&tokens);
+    LifeScriptParser parser(&tokens);
 
     // Convert to LifeConfig
     LifeScript config;
-    LifeScriptVisitor visitor(config);
+    LifeScriptConverterVisitor visitor(config);
     parser.script()->accept(&visitor);
 
     // Return LifeConfig

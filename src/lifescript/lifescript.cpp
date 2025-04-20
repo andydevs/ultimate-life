@@ -1,7 +1,7 @@
 #include <lifescript/lifescript.h>
+#include <lifescript/lifescriptvisitor.h>
 #include <LifeScriptLexer.h>
 #include <LifeScriptParser.h>
-#include <antlr4-runtime.h>
 #include <fstream>
 
 using namespace ul::ls;
@@ -79,88 +79,6 @@ void LifeScript::add_elem(LSElem elem)
 {
     m_elems.push_back(elem);
 };
-
-// ------------------------------------------------ Prefabdef Visitor DEF -------------------------------------------------
-
-std::vector<LSElem>& PrefabdefVisitor::elems() { return m_elems; }
-
-any PrefabdefVisitor::visitPrefelems(LifeScriptParser::PrefelemsContext *context)
-{
-    for (antlr4::tree::ParseTree *elem : context->children) 
-    {
-        LSElem lcelem = any_cast<LSElem>(elem->accept(this));
-        m_elems.push_back(lcelem);
-    }
-    return nullopt;
-}
-
-any PrefabdefVisitor::visitRelprefab(LifeScriptParser::RelprefabContext *context)
-{
-    LSElem elem;
-    elem.prefabbed = true;
-    elem.prefab_name = context->IDENTIFIER()->getText();
-    LSElem cellem = any_cast<LSElem>(visitRelcell(context->relcell()));
-    elem.elem_cell = cellem.elem_cell;
-    return elem;
-}
-
-any PrefabdefVisitor::visitRelcell(LifeScriptParser::RelcellContext *context)
-{
-    LSElem elem;
-    elem.prefabbed = false;
-    elem.elem_cell = cell(
-        stoi(context->RELNUM(0)->getText()),
-        stoi(context->RELNUM(1)->getText())
-    );
-    return elem;
-}
-
-
-// ------------------------------------------------ LifeScript Visitor DEF ------------------------------------------------
-
-LifeScriptConverterVisitor::LifeScriptConverterVisitor(LifeScript& ls): m_ls(ls) {}
-
-any LifeScriptConverterVisitor::visitGridstmt(LifeScriptParser::GridstmtContext *context)
-{
-    std::string property_name = context->IDENTIFIER()->getText();
-    int property_value = stoi(context->ABSNUM()->getText());
-    m_ls.set_grid_property(property_name, property_value);
-    return nullopt;
-}
-
-any LifeScriptConverterVisitor::visitPrefdef(LifeScriptParser::PrefdefContext *context)
-{
-    std::string prefab_name = context->IDENTIFIER()->getText();
-    PrefabdefVisitor prefab_visitor;
-    context->prefelems()->accept(&prefab_visitor);
-    m_ls.add_prefab(prefab_name, prefab_visitor.elems());
-    return nullopt;
-};
-
-any LifeScriptConverterVisitor::visitAbsprefab(LifeScriptParser::AbsprefabContext *context)
-{
-    LSElem elem;
-    elem.prefabbed = true;
-    elem.prefab_name = context->IDENTIFIER()->getText();
-    elem.elem_cell = cell(
-        stoi(context->abscell()->ABSNUM(0)->getText()),
-        stoi(context->abscell()->ABSNUM(1)->getText())
-    );
-    m_ls.add_elem(elem);
-    return nullopt;
-}
-
-any LifeScriptConverterVisitor::visitAbscell(LifeScriptParser::AbscellContext *context)
-{
-    LSElem elem;
-    elem.prefabbed = false;
-    elem.elem_cell = cell(
-        stoi(context->ABSNUM(0)->getText()),
-        stoi(context->ABSNUM(1)->getText())
-    );
-    m_ls.add_elem(elem);
-    return nullopt;
-}
 
 // ----------------------------------------------- READSCRIPT DEF ----------------------------------------------
 

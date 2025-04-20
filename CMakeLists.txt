@@ -3,8 +3,8 @@ project(ultimate_life)
 
 set(CMAKE_CXX_STANDARD_REQUIRED 17)
 
-find_package(SDL2)
-find_package(antlr4-runtime)
+find_package(SDL2 REQUIRED)
+find_package(antlr4-runtime REQUIRED)
 find_package(GTest)
 include_directories(include)
 

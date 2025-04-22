@@ -45,6 +45,10 @@ install(TARGETS ultimate_life)
 # Ultimate Life Test Suite
 file(GLOB UL_TEST_SRC tests/*.cpp)
 add_executable(test_ultimate_life ${UL_TEST_SRC})
-target_link_libraries(test_ultimate_life gtest::gtest utils lifescript)
+target_link_libraries(test_ultimate_life 
+    gtest::gtest 
+        utils 
+        lifescript
+    )
 include(GoogleTest)
 gtest_discover_tests(test_ultimate_life)

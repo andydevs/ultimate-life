@@ -1,6 +1,5 @@
 #pragma once
 #include <lifescript/misc.h>
-#include <ultimate_life/grid.h>
 #include <vector>
 #include <string>
 #include <map>
@@ -9,17 +8,23 @@ namespace ul
 {
     namespace ls
     {
+        class CellFunctional
+        {
+        public:
+            virtual ~CellFunctional() = default;
+            virtual void receive(cell c) = 0;
+        };
+
         struct LSElem {
             bool prefabbed;
             std::string prefab_name;
             cell elem_cell;
         };
 
-        class LifeScript
+        class LifeScript2
         {
         public:
-            void foreach_cell(std::function<void(cell)> func);
-            void instantiate(Grid& grid);
+            void foreach_cell(CellFunctional& f);
             int grid_property(const std::string& name, int default_value);
             void set_grid_property(const std::string& name, int value);
             void add_prefab(const std::string& name, std::vector<LSElem>& elems);
@@ -28,10 +33,7 @@ namespace ul
             std::map<std::string, int> m_grid_config;
             std::map<std::string, std::vector<LSElem>> m_prefabs;
             std::vector<LSElem> m_elems;
-            void __instantiatePrefab(ul::Grid& grid, LSElem& elem);
-            void __foreach_prefab(LSElem& elem, std::function<void(cell)>& func);
+            void __foreach_prefab(LSElem& elem, CellFunctional& f);
         };
-
-        LifeScript readScript(std::string& filename);
     };
 };

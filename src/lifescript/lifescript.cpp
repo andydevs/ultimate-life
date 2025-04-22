@@ -7,12 +7,63 @@
 using namespace ul::ls;
 using namespace std;
 
+
+void LifeScript::foreach_cell(function<void(cell)> func)
+{
+    for (LSElem elem : m_elems) 
+    {
+        if (elem.prefabbed)
+        {
+            __foreach_prefab(elem, func);
+        }
+        else
+        {
+            func(elem.elem_cell);
+        }
+    }
+}
+
+
+void LifeScript::__foreach_prefab(LSElem& elem, std::function<void(cell)>& func)
+{
+    // Lookup prefab
+    if (!m_prefabs.count(elem.prefab_name))
+    {
+        std::stringstream s;
+        s << "Unrecognized prefab: " << elem.prefab_name << " out of defs";
+        for (auto &&e : m_prefabs)
+        {
+            s << " " << e.first;
+        }
+        throw s;
+    }
+    vector<LSElem> sub_elems = m_prefabs.at(elem.prefab_name);
+
+    // Iterate through each element
+    int x = elem.elem_cell.first;
+    int y = elem.elem_cell.second;
+    for (LSElem sub_elem : sub_elems) 
+    {
+        LSElem offsetted_elem(sub_elem);
+        offsetted_elem.elem_cell.first += x;
+        offsetted_elem.elem_cell.second += y;
+        if (sub_elem.prefabbed)
+        {
+            __foreach_prefab(offsetted_elem, func);
+        }
+        else
+        {
+            func(offsetted_elem.elem_cell);
+        }
+    }
+}
+
 void LifeScript::__instantiatePrefab(ul::Grid& grid, LSElem& elem)
 {
     if (!m_prefabs.count(elem.prefab_name))
     {
         std::stringstream s;
-        s << "Unrecognized prefab type: " << elem.prefab_name << " out of types";
+        s << "Unrecognized prefab: " << elem.prefab_name << " out of defs";
         for (auto &&e : m_prefabs)
         {
             s << " " << e.first;
@@ -26,10 +77,10 @@ void LifeScript::__instantiatePrefab(ul::Grid& grid, LSElem& elem)
     {
         if (sube.prefabbed)
         {
-            LSElem ne(sube);
-            ne.elem_cell.first += x;
-            ne.elem_cell.second += y;
-            __instantiatePrefab(grid, ne);
+            LSElem new_elem(sube);
+            new_elem.elem_cell.first += x;
+            new_elem.elem_cell.second += y;
+            __instantiatePrefab(grid, new_elem);
         }
         else
         {
@@ -98,7 +149,7 @@ LifeScript ul::ls::readScript(string& filename)
     antlr4::CommonTokenStream tokens(&lexer);
     LifeScriptParser parser(&tokens);
 
-    // Convert to LifeConfig
+    // Convert to LifeScript
     LifeScript config;
     LifeScriptConverterVisitor visitor(config);
     parser.script()->accept(&visitor);

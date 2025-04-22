@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED 17)
 
 find_package(SDL2 REQUIRED)
 find_package(antlr4-runtime REQUIRED)
-find_package(GTest)
+find_package(GTest REQUIRED)
 include_directories(include)
 
 # Utils library
@@ -45,6 +45,6 @@ install(TARGETS ultimate_life)
 # Ultimate Life Test Suite
 file(GLOB UL_TEST_SRC tests/*.cpp)
 add_executable(test_ultimate_life ${UL_TEST_SRC})
-target_link_libraries(test_ultimate_life gtest::gtest utils)
+target_link_libraries(test_ultimate_life gtest::gtest utils lifescript)
 include(GoogleTest)
 gtest_discover_tests(test_ultimate_life)

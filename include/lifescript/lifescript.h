@@ -1,4 +1,5 @@
 #pragma once
+#include <lifescript/misc.h>
 #include <ultimate_life/grid.h>
 #include <vector>
 #include <string>
@@ -8,8 +9,6 @@ namespace ul
 {
     namespace ls
     {
-        using cell = std::pair<int, int>;
-
         struct LSElem {
             bool prefabbed;
             std::string prefab_name;

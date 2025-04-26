@@ -16,7 +16,7 @@ jobs:
       - name: Setup Conan
         run: |
           sudo apt update -y
-          sudo apt install conan
+          sudo pip install conan
           sudo conan profile detect
       - name: Install Dependencies
         run: sudo conan install . --build=missing --conf tools.system.package_manager:mode=install

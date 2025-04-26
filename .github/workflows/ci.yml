@@ -14,17 +14,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Conan
-        uses: jwidauer/setup-conan@v1
+        run: sudo pip install conan
       - name: Initialize profile
-        run: conan profile detect
+        run: sudo conan profile detect
       - name: Install Dependencies
-        run: conan install . --build=missing --conf tools.system.package_manager:mode=install
+        run: sudo conan install . --build=missing --conf tools.system.package_manager:mode=install
       - name: Configure CMake
-        run: cmake --preset conan-release
+        run: sudo cmake --preset conan-release
       - name: Build Project
-        run: cmake --build --preset conan-release
+        run: sudo cmake --build --preset conan-release
       - name: Run Unit Tests
-        run: ctest --preset conan-release
+        run: sudo ctest --preset conan-release
   
   test_install_on_linux:
     name: Install on Linux

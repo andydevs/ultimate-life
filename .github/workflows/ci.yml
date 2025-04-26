@@ -18,7 +18,7 @@ jobs:
       - name: Install Dependencies
         run: |
           conan profile detect
-          conan install . --build=missing --conf tools.system.package_manager:mode=install
+          sudo -E conan install . --build=missing --conf tools.system.package_manager:mode=install
       - name: Configure CMake
         run: cmake --preset conan-release
       - name: Build Project

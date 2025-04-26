@@ -17,8 +17,8 @@ jobs:
         run: |
           sudo apt update -y
           sudo apt upgrade -y
-      - name: Install Conan
-        run: sudo pip install conan
+      - name: Setup Conan
+        uses: jwidauer/setup-conan@v1
       - name: Initialize profile
         run: sudo conan profile detect
       - name: Install Dependencies

@@ -1,8 +1,10 @@
 #pragma once
+#include <lifescript/lifescript.h>
 #include <ultimate_life/window.h>
 #include <utils/range2d.h>
 
 namespace ul {
+
     class Grid {
     private:
         const int FRAMES;
@@ -22,4 +24,13 @@ namespace ul {
         void update();
         utils::range2d<int> grid_indeces();
     };
+
+    class GridInitialize : public script::CellFunctional {
+    public:
+        GridInitialize(Grid& grid_ref);
+        void receive(script::cell cell) override;
+    private:
+        Grid& m_grid_ref;
+    };
+    
 };

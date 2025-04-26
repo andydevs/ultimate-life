@@ -1,6 +1,6 @@
 #include <lifescript/prefabdefvisitor.h>
 
-using namespace ul::ls;
+using namespace ul::script;
 using namespace std;
 
 vector<LSElem>& PrefabdefVisitor::elems() { return m_elems; }

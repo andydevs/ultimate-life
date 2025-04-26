@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include <lifescript/lifescript2.h>
+#include <lifescript/lifescript.h>
 #include <iostream>
 #include <vector>
 
 using namespace std;
-using namespace ul::ls;
+using namespace ul::script;
 using namespace ::testing;
 
 class MockCellFunctional : public CellFunctional
@@ -19,7 +19,7 @@ public:
 #define PREFAB(name, x, y) LSElem { .prefabbed = true, .prefab_name = name, .elem_cell = cell(x, y) }
 
 TEST(TestLifeScriptForeachCell, TestWithCells) {
-    LifeScript2 ls;
+    LifeScript ls;
     MockCellFunctional f;
     
     ls.add_elem(CELL(0, 10));
@@ -35,7 +35,7 @@ TEST(TestLifeScriptForeachCell, TestWithCells) {
 }
 
 TEST(TestLifeScriptForeachCell, TestPrefab) {
-    LifeScript2 ls;
+    LifeScript ls;
     MockCellFunctional f;
 
     vector<LSElem> subelems;
@@ -54,7 +54,7 @@ TEST(TestLifeScriptForeachCell, TestPrefab) {
 }
 
 TEST(TestLifeScriptForeachCell, TestNestedPrefab) {
-    LifeScript2 ls;
+    LifeScript ls;
     MockCellFunctional f;
 
     vector<LSElem> subsubelems;

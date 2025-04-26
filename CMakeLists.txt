@@ -23,7 +23,6 @@ set(LS_PARSER_SRC
 foreach(ls_parser_file ${LS_PARSER_SRC})
     set_property(SOURCE ${ls_parser_file} PROPERTY GENERATED TRUE)
 endforeach(ls_parser_file ${LS_PARSER_SRC})
-# add_custom_target(lifescript_parser_files DEPENDS ${LS_PARSER_SRC})
 add_custom_command(OUTPUT ${LS_PARSER_SRC}
                    COMMAND
                    test -d generated || mkdir generated
@@ -34,7 +33,7 @@ add_custom_command(OUTPUT ${LS_PARSER_SRC}
 file(GLOB LC_SRC ${PROJECT_SOURCE_DIR}/src/lifescript/*.cpp)
 add_library(lifescript ${LS_PARSER_SRC} ${LC_SRC})
 target_include_directories(lifescript PUBLIC src/lifescript/generated)
-target_link_libraries(lifescript antlr4_static SDL2::SDL2-static)
+target_link_libraries(lifescript antlr4_static)
 
 # Ultimate Life EXE
 file(GLOB UL_EXE_SRC src/ultimate_life/*.cpp)
@@ -45,11 +44,7 @@ install(TARGETS ultimate_life)
 # Ultimate Life Test Suite
 file(GLOB UL_TEST_SRC tests/*.cpp)
 add_executable(test_ultimate_life ${UL_TEST_SRC})
-target_link_libraries(test_ultimate_life 
-    gtest::gtest
-    utils 
-    lifescript
-)
+target_link_libraries(test_ultimate_life gtest::gtest utils lifescript)
 enable_testing()
 include(GoogleTest)
 gtest_discover_tests(test_ultimate_life)

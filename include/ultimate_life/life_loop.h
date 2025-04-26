@@ -12,5 +12,5 @@ namespace ul
     void life_loop(
         Window& window, 
         Renderer& renderer,
-        ls::LifeScript& config);
+        script::LifeScript& config);
 }

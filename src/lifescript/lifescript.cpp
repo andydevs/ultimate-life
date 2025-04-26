@@ -1,30 +1,27 @@
 #include <lifescript/lifescript.h>
-#include <lifescript/lifescriptvisitor.h>
-#include <LifeScriptLexer.h>
-#include <LifeScriptParser.h>
-#include <fstream>
+#include <sstream>
 
-using namespace ul::ls;
+using namespace ul::script;
 using namespace std;
 
 
-void LifeScript::foreach_cell(function<void(cell)> func)
+void LifeScript::foreach_cell(CellFunctional& f)
 {
     for (LSElem elem : m_elems) 
     {
         if (elem.prefabbed)
         {
-            __foreach_prefab(elem, func);
+            __foreach_prefab(elem, f);
         }
         else
         {
-            func(elem.elem_cell);
+            f.receive(elem.elem_cell);
         }
     }
 }
 
 
-void LifeScript::__foreach_prefab(LSElem& elem, std::function<void(cell)>& func)
+void LifeScript::__foreach_prefab(LSElem& elem, CellFunctional& f)
 {
     // Lookup prefab
     if (!m_prefabs.count(elem.prefab_name))
@@ -49,57 +46,11 @@ void LifeScript::__foreach_prefab(LSElem& elem, std::function<void(cell)>& func)
         offsetted_elem.elem_cell.second += y;
         if (sub_elem.prefabbed)
         {
-            __foreach_prefab(offsetted_elem, func);
+            __foreach_prefab(offsetted_elem, f);
         }
         else
         {
-            func(offsetted_elem.elem_cell);
-        }
-    }
-}
-
-void LifeScript::__instantiatePrefab(ul::Grid& grid, LSElem& elem)
-{
-    if (!m_prefabs.count(elem.prefab_name))
-    {
-        std::stringstream s;
-        s << "Unrecognized prefab: " << elem.prefab_name << " out of defs";
-        for (auto &&e : m_prefabs)
-        {
-            s << " " << e.first;
-        }
-        throw s;
-    }
-    vector<LSElem> subelems = m_prefabs.at(elem.prefab_name);
-    int x = elem.elem_cell.first;
-    int y = elem.elem_cell.second;
-    for (LSElem sube : subelems)
-    {
-        if (sube.prefabbed)
-        {
-            LSElem new_elem(sube);
-            new_elem.elem_cell.first += x;
-            new_elem.elem_cell.second += y;
-            __instantiatePrefab(grid, new_elem);
-        }
-        else
-        {
-            grid.aliven(x + sube.elem_cell.first, y + sube.elem_cell.second);
-        }
-    }
-}
-
-void LifeScript::instantiate(ul::Grid& g) 
-{
-    for (LSElem elem: m_elems)
-    {        
-        if (elem.prefabbed)
-        {
-            __instantiatePrefab(g, elem);
-        }
-        else
-        {
-            g.aliven(elem.elem_cell.first, elem.elem_cell.second);
+            f.receive(offsetted_elem.elem_cell);
         }
     }
 }
@@ -130,30 +81,3 @@ void LifeScript::add_elem(LSElem elem)
 {
     m_elems.push_back(elem);
 };
-
-// ----------------------------------------------- READSCRIPT DEF ----------------------------------------------
-
-LifeScript ul::ls::readScript(string& filename)
-{
-    // Open script file
-    ifstream script(filename);
-    if (!script.is_open()) {
-        stringstream s;
-        s << "ERROR Cannot open file " << filename;
-        throw s;
-    };
-
-    // Parse using ANTLR
-    antlr4::ANTLRInputStream input(script);
-    LifeScriptLexer lexer(&input);
-    antlr4::CommonTokenStream tokens(&lexer);
-    LifeScriptParser parser(&tokens);
-
-    // Convert to LifeScript
-    LifeScript config;
-    LifeScriptConverterVisitor visitor(config);
-    parser.script()->accept(&visitor);
-
-    // Return LifeConfig
-    return config;
-}

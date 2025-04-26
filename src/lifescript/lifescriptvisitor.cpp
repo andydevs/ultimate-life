@@ -1,7 +1,7 @@
 #include <lifescript/lifescriptvisitor.h>
 #include <lifescript/prefabdefvisitor.h>
 
-using namespace ul::ls;
+using namespace ul::script;
 using namespace std;
 
 LifeScriptConverterVisitor::LifeScriptConverterVisitor(LifeScript& ls): m_ls(ls) {}

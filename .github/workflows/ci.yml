@@ -13,20 +13,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Setup SDL
+        uses: libsdl-org/setup-sdl@v1
       - name: Setup Conan
         uses: jwidauer/setup-conan@v1
-      - name: Update APT
-        run: |
-          sudo apt update -y
-          sudo apt upgrade -y
       - name: Install Dependencies
         run: |
           conan profile detect
-          conan install . --build=missing --conf tools.system.package_manager:mode=install
-      - name: Configure CMake
-        run: cmake --preset conan-release
+          conan install . --build=missing
       - name: Build Project
-        run: cmake --build --preset conan-release
+        run: |
+          cmake --preset conan-release
+          cmake --build --preset conan-release
       - name: Run Unit Tests
         run: ctest --preset conan-release
   

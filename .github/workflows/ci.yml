@@ -14,9 +14,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Conan
-        run: sudo pip install conan
-      - name: Initialize profile
-        run: sudo conan profile detect
+        run: |
+          sudo apt update -y
+          sudo pip install conan
+          sudo conan profile detect
       - name: Install Dependencies
         run: sudo conan install . --build=missing --conf tools.system.package_manager:mode=install
       - name: Configure CMake

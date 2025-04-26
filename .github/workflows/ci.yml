@@ -15,10 +15,14 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup Conan
         uses: jwidauer/setup-conan@v1
+      - name: Update APT
+        run: |
+          sudo apt update -y
+          sudo apt upgrade -y
       - name: Install Dependencies
         run: |
           conan profile detect
-          sudo -E conan install . --build=missing --conf tools.system.package_manager:mode=install
+          conan install . --build=missing --conf tools.system.package_manager:mode=install
       - name: Configure CMake
         run: cmake --preset conan-release
       - name: Build Project

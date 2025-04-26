@@ -16,7 +16,9 @@ jobs:
       - name: Setup Conan
         uses: jwidauer/setup-conan@v1
       - name: Install Dependencies
-        run: conan install . --build=missing --conf tools.system.package_manager:mode=install
+        run: |
+          conan profile detect
+          conan install . --build=missing --conf tools.system.package_manager:mode=install
       - name: Configure CMake
         run: cmake --preset conan-release
       - name: Build Project

@@ -13,22 +13,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Update APT
-        run: |
-          sudo apt update -y
-          sudo apt upgrade -y
       - name: Setup Conan
         uses: jwidauer/setup-conan@v1
       - name: Initialize profile
-        run: sudo conan profile detect
+        run: conan profile detect
       - name: Install Dependencies
-        run: sudo conan install . --build=missing --conf tools.system.package_manager:mode=install
+        run: conan install . --build=missing --conf tools.system.package_manager:mode=install
       - name: Configure CMake
-        run: sudo cmake --preset conan-release
+        run: cmake --preset conan-release
       - name: Build Project
-        run: sudo cmake --build --preset conan-release
+        run: cmake --build --preset conan-release
       - name: Run Unit Tests
-        run: sudo ctest --preset conan-release
+        run: ctest --preset conan-release
   
   test_install_on_linux:
     name: Install on Linux

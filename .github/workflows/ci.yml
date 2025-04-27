@@ -13,6 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install GL Libs
+        run: |
+          sudo apt update -y
+          sudo apt upgrade -y
+          sudo apt install -y libegl1-mesa-dev
       - name: Setup Conan Client
         uses: conan-io/setup-conan@v1
       - name: Install Dependencies

@@ -9,8 +9,8 @@ on:
   
 jobs:
   unit_tests:
-    name: Run Unit Tests Please
-    runs-on: ubuntu-bionic
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Setup SDL

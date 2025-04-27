@@ -16,10 +16,7 @@ jobs:
       - name: Install Graphics Libs Please
         run: |
           sudo apt update -y
-          sudo apt install -y \
-            libegl1-mesa-dev \
-            mesa-utils \
-            libx11-dev
+          sudo apt install -y libegl1-mesa-dev mesa-utils libx11-dev
       - name: Setup Conan Client
         uses: conan-io/setup-conan@v1
       - name: Install Dependencies

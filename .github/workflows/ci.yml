@@ -15,17 +15,25 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup Python
         uses: actions/setup-python@v5.6.0
-      - name: Install Dependencies
+      - name: Install Conan
+        run: sudo pip install --ignore-installed conan
+      - name: Cache Conan Dependencies
+        id: cache-conan
+        uses: actions/cache@v2
+        with:
+          path: /root/.conan2
+          key: conan-dir
+      - if: ${{steps.cache-conan.outputs.cache-hit != 'true'}}
+        name: Install Dependencies
         run: |
-          sudo pip install --ignore-installed conan
           sudo conan profile detect
           sudo conan install . --build=missing --conf tools.system.package_manager:mode=install
       - name: Build Project
         run: |
-          cmake --preset conan-release
-          cmake --build --preset conan-release
+          sudo cmake --preset conan-release
+          sudo cmake --build --preset conan-release
       - name: Run Unit Tests
-        run: ctest --preset conan-release
+        run: sudo ctest --preset conan-release
   
   test_install_on_linux:
     name: Install on Linux

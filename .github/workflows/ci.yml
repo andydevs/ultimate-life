@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install Graphics Libs
+      - name: Install Graphics Libs Please
         run: |
           sudo apt update -y
           sudo apt install -y \

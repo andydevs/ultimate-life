@@ -19,7 +19,7 @@ jobs:
         run: sudo pip install --ignore-installed conan
       - name: Cache Conan Dependencies
         id: cache-conan
-        uses: actions/cache@v2
+        uses: actions/cache@v4.2.3
         with:
           path: /root/.conan2
           key: conan-dir

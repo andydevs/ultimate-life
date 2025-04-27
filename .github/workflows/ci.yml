@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install Dependencies
         run: |
-          sudo pip3 install conan
+          sudo apt install -y conan
           sudo conan install . --build=missing --conf tools.system.package_manager:mode=install
       - name: Build Project
         run: |

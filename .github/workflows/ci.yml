@@ -16,7 +16,7 @@ jobs:
         run: |
           sudo apt update -y
           sudo apt upgrade -y
-          sudo apt install -y libegl1-mesa mesa-utils xvfb libsdl2-dev libsdl2-2.0-0
+          sudo apt install -y libegl1-mesa-dev mesa-utils xvfb libsdl2-dev libsdl2-2.0-0
           sudo xvfb glxinfo
       - name: Setup Conan
         uses: jwidauer/setup-conan@v1

@@ -18,8 +18,8 @@ jobs:
           sudo apt upgrade -y
           sudo apt install -y libegl1-mesa-dev mesa-utils xvfb libsdl2-dev libsdl2-2.0-0
           sudo xvfb-run glxinfo
-      - name: Setup Conan
-        uses: jwidauer/setup-conan@v1
+      - name: Setup Conan Client
+        uses: conan-io/setup-conan@v1
       - name: Install Dependencies
         run: |
           conan profile detect
@@ -36,12 +36,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Update APT
+      - name: Setup Linux Graphics Libraries
         run: |
           sudo apt update -y
           sudo apt upgrade -y
-      - name: Install Conan
-        run: sudo pip install conan
+          sudo apt install -y libegl1-mesa-dev mesa-utils xvfb libsdl2-dev libsdl2-2.0-0
+          sudo xvfb-run glxinfo
+      - name: Setup Conan Client
+        uses: conan-io/setup-conan@v1
       - name: Initialize profile
         run: sudo conan profile detect
       - name: Run install script
@@ -52,8 +54,8 @@ jobs:
     runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
-      - name: Install Conan
-        run: sudo python3 -m pip install conan
+      - name: Setup Conan Client
+        uses: conan-io/setup-conan@v1
       - name: Initialize profile
         run: sudo conan profile detect
       - name: Run install script

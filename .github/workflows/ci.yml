@@ -20,7 +20,7 @@ jobs:
       - name: Setup Conan Client
         uses: conan-io/setup-conan@v1
       - name: Install Dependencies
-        run: sudo conan install . --build=missing --conf tools.system.package_manager:mode=install
+        run: sudo -E conan install . --build=missing --conf tools.system.package_manager:mode=install
       - name: Build Project
         run: |
           cmake --preset conan-release

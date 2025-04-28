@@ -23,6 +23,7 @@ jobs:
         with:
           path: /root/.conan2
           key: conan-dir
+          save-always: true
       - if: ${{steps.cache-conan.outputs.cache-hit != 'true'}}
         name: Install Dependencies
         run: |

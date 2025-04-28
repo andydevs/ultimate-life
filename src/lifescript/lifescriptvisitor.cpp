@@ -11,7 +11,7 @@ any LifeScriptConverterVisitor::visitGridstmt(LifeScriptParser::GridstmtContext 
     std::string property_name = context->IDENTIFIER()->getText();
     int property_value = stoi(context->ABSNUM()->getText());
     m_ls.set_grid_property(property_name, property_value);
-    return nullopt;
+    return any();
 }
 
 any LifeScriptConverterVisitor::visitPrefdef(LifeScriptParser::PrefdefContext *context)
@@ -20,7 +20,7 @@ any LifeScriptConverterVisitor::visitPrefdef(LifeScriptParser::PrefdefContext *c
     PrefabdefVisitor prefab_visitor;
     context->prefelems()->accept(&prefab_visitor);
     m_ls.add_prefab(prefab_name, prefab_visitor.elems());
-    return nullopt;
+    return any();
 };
 
 any LifeScriptConverterVisitor::visitAbsprefab(LifeScriptParser::AbsprefabContext *context)
@@ -33,7 +33,7 @@ any LifeScriptConverterVisitor::visitAbsprefab(LifeScriptParser::AbsprefabContex
         stoi(context->abscell()->ABSNUM(1)->getText())
     );
     m_ls.add_elem(elem);
-    return nullopt;
+    return any();
 }
 
 any LifeScriptConverterVisitor::visitAbscell(LifeScriptParser::AbscellContext *context)
@@ -45,5 +45,5 @@ any LifeScriptConverterVisitor::visitAbscell(LifeScriptParser::AbscellContext *c
         stoi(context->ABSNUM(1)->getText())
     );
     m_ls.add_elem(elem);
-    return nullopt;
+    return any();
 }

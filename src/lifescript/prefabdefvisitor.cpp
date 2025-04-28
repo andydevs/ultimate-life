@@ -12,7 +12,7 @@ any PrefabdefVisitor::visitPrefelems(LifeScriptParser::PrefelemsContext *context
         LSElem lcelem = any_cast<LSElem>(elem->accept(this));
         m_elems.push_back(lcelem);
     }
-    return nullopt;
+    return any();
 }
 
 any PrefabdefVisitor::visitRelprefab(LifeScriptParser::RelprefabContext *context)

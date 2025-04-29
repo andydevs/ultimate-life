@@ -2,7 +2,7 @@
 #include <SDL2/SDL.h>
 #include <raiisdl/sdl.h>
 
-namespace ul {
+namespace raiisdl {
 
     /**
      * RAII managed SDL window

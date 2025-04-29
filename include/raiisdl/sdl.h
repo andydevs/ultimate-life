@@ -3,7 +3,7 @@
 #include <sstream>
 
 
-namespace ul {
+namespace raiisdl {
     /**
      * RAII managed SDL instance
      */

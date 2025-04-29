@@ -1,11 +1,10 @@
 #include <ultimate_life/life_loop.h>
-#include <ultimate_life/grid.h>
 #include <iostream>
 
 /**
  * Run life loop on window and renderer
  */
-void ul::life_loop(ul::Grid& grid, int cellsize, ul::Renderer& renderer) 
+void ul::life_loop(ul::Grid& grid, int cellsize, raiisdl::Renderer& renderer) 
 {
     SDL_Event e;
     while (true) 

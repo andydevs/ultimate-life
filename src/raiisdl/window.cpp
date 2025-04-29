@@ -7,7 +7,7 @@
  * NOTE: We're requesting a reference to an SDL instance 
  *       in order to ensure that SDL has been initialized
  */
-ul::Window::Window(const SDL& _sdl, const char* title, int w, int h): m_width(w), m_height(h) {
+raiisdl::Window::Window(const SDL& _sdl, const char* title, int w, int h): m_width(w), m_height(h) {
     m_window_handle = SDL_CreateWindow(title, 
         SDL_WINDOWPOS_UNDEFINED, 
         SDL_WINDOWPOS_UNDEFINED, 
@@ -17,7 +17,7 @@ ul::Window::Window(const SDL& _sdl, const char* title, int w, int h): m_width(w)
 /**
  * Deinitialize
  */
-ul::Window::~Window() {
+raiisdl::Window::~Window() {
     SDL_DestroyWindow(m_window_handle);
 }
 
@@ -25,14 +25,14 @@ ul::Window::~Window() {
 /**
  * Get window width
  */
-int ul::Window::width() {
+int raiisdl::Window::width() {
     return m_width;
 }
 
 /**
  * Get window height
  */
-int ul::Window::height() {
+int raiisdl::Window::height() {
     return m_height;
 }
 
@@ -44,6 +44,6 @@ int ul::Window::height() {
  *       other properties should be done
  *       by object methods
  */
-SDL_Window* ul::Window::__UNSAFE_get_window_handle() {
+SDL_Window* raiisdl::Window::__UNSAFE_get_window_handle() {
     return m_window_handle;
 }

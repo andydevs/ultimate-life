@@ -30,9 +30,9 @@ int main(int argc, char const *argv[])
     config.foreach_cell(init_grid);
 
     // Initialize SDL
-    ul::SDL sdl;
-    ul::Window window(sdl, "Ultimate Life", width, height);
-    ul::Renderer renderer(window);
+    raiisdl::SDL sdl;
+    raiisdl::Window window(sdl, "Ultimate Life", width, height);
+    raiisdl::Renderer renderer(window);
 
     // Begin lifeloop
     ul::life_loop(grid, cellsize, renderer);

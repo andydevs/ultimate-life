@@ -1,5 +1,5 @@
-#include <ultimate_life/macros.h>
-#include <ultimate_life/sdl.h>
+#include <raiisdl/macros.h>
+#include <raiisdl/sdl.h>
 
 
 ul::SDL::SDL() {

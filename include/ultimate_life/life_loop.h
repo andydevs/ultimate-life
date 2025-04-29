@@ -1,6 +1,6 @@
 #pragma once
 #include <ultimate_life/grid.h>
-#include <ultimate_life/renderer.h>
+#include <raiisdl/renderer.h>
 #include <lifescript/lifescript.h>
 #include <vector>
 

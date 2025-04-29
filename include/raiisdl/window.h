@@ -1,6 +1,6 @@
 #pragma once
 #include <SDL2/SDL.h>
-#include <ultimate_life/sdl.h>
+#include <raiisdl/sdl.h>
 
 namespace ul {
 

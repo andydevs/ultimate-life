@@ -1,5 +1,5 @@
-#include <ultimate_life/macros.h>
-#include <ultimate_life/renderer.h>
+#include <raiisdl/macros.h>
+#include <raiisdl/renderer.h>
 
 /**
  * Initialize with window

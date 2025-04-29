@@ -35,10 +35,15 @@ add_library(lifescript ${LS_PARSER_SRC} ${LC_SRC})
 target_include_directories(lifescript PUBLIC src/lifescript/generated)
 target_link_libraries(lifescript antlr4_static)
 
+# RAII SDL Library
+file(GLOB RAIISDL_SRC src/raiisdl/*.cpp)
+add_library(raiisdl ${RAIISDL_SRC})
+target_link_libraries(raiisdl SDL2::SDL2-static)
+
 # Ultimate Life EXE
 file(GLOB UL_EXE_SRC src/ultimate_life/*.cpp)
 add_executable(ultimate_life ${UL_EXE_SRC})
-target_link_libraries(ultimate_life utils lifescript SDL2::SDL2-static)
+target_link_libraries(ultimate_life utils lifescript raiisdl)
 install(TARGETS ultimate_life)
 
 # Ultimate Life Test Suite

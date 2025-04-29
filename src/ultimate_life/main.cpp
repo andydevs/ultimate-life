@@ -1,6 +1,6 @@
-#include <ultimate_life/sdl.h>
-#include <ultimate_life/window.h>
-#include <ultimate_life/renderer.h>
+#include <raiisdl/sdl.h>
+#include <raiisdl/window.h>
+#include <raiisdl/renderer.h>
 #include <ultimate_life/grid.h>
 #include <ultimate_life/life_loop.h>
 #include <lifescript/readscript.h>

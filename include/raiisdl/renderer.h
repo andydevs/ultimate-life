@@ -1,6 +1,6 @@
 #pragma once
 #include <SDL2/SDL.h>
-#include <ultimate_life/window.h>
+#include <raiisdl/window.h>
 
 namespace ul {
 

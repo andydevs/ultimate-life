@@ -5,17 +5,17 @@
 
 namespace ul {
 
+    const int GRID_FRAMES = 2;
+
     class Grid {
     private:
-        const int FRAMES;
-        int m_cell_size;
-        Window& m_window;
+        int m_width;
+        int m_height;
         char ***m_buffer;
         int m_frame;
     public:
-        Grid(Window& window, int cell_size);
+        Grid(int width, int height);
         ~Grid();
-        int cell_size();
         int width();
         int height();
         int cell(int i, int j);

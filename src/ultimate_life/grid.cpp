@@ -2,30 +2,27 @@
 #include <utils/range2d.h>
 #include <utils/range.h>
 
-ul::Grid::Grid(Window& window, int cell_size): 
-    FRAMES(2),
-    m_window(window), 
-    m_cell_size(cell_size),
+ul::Grid::Grid(int width, int height): 
+    m_width(width),
+    m_height(height),
     m_frame(0)
 {
-    int grid_width = width();
-    int grid_height = height();
-    m_buffer = new char**[FRAMES];
-    for (int f : utils::range<int>(FRAMES))
+    m_buffer = new char**[ul::GRID_FRAMES];
+    for (int f : utils::range<int>(ul::GRID_FRAMES))
     {
-        m_buffer[f] = new char*[grid_width];
-        for (int i : utils::range<int>(grid_width))
+        m_buffer[f] = new char*[m_width];
+        for (int i : utils::range<int>(m_width))
         {
-            m_buffer[f][i] = new char[grid_height];
+            m_buffer[f][i] = new char[m_height];
         }
     }
 }
 
 ul::Grid::~Grid() {
     int grid_width = width();
-    for (int f : utils::range<int>(FRAMES))
+    for (int f : utils::range<int>(GRID_FRAMES))
     {
-        for (int i : utils::range<int>(grid_width))
+        for (int i : utils::range<int>(m_width))
         {
             delete m_buffer[f][i];   
         }
@@ -34,16 +31,12 @@ ul::Grid::~Grid() {
     delete m_buffer;
 }
 
-int ul::Grid::cell_size() {
-    return m_cell_size;
-}
-
 int ul::Grid::width() {
-    return m_window.width() / m_cell_size;
+    return m_width;
 }
 
 int ul::Grid::height() {
-    return m_window.height() / m_cell_size;
+    return m_height;
 }
 
 int ul::Grid::cell(int i, int j) {

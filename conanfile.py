@@ -13,7 +13,7 @@ class UltimateLife(ConanFile):
         self.test_requires('gtest/[>=1.13]')
 
     def requirements(self):
-        self.requires("sdl/2.30.6")
+        self.requires("sdl/2.32.2")
         self.requires("antlr4-cppruntime/[>=4.13]")
 
     def layout(self):

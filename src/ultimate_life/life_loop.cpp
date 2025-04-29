@@ -5,13 +5,14 @@
 /**
  * Run life loop on window and renderer
  */
-void ul::life_loop(ul::Window& window, ul::Renderer& renderer, ul::lc::LifeConfig& cfg) 
+void ul::life_loop(ul::Window& window, ul::Renderer& renderer, ul::script::LifeScript& cfg) 
 {
     int cellsize = cfg.grid_property("cellsize", 5);
 
     // Init grid
     ul::Grid grid(window, cellsize);
-    cfg.instantiate(grid);
+    ul::GridInitialize init(grid);
+    cfg.foreach_cell(init);
 
     SDL_Event e;
     while (true) 

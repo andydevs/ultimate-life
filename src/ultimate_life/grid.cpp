@@ -85,3 +85,9 @@ ul::utils::range2d<int> ul::Grid::grid_indeces()
     utils::range<int> ry(height());
     return utils::range2d<int>(rx, ry);
 }
+
+ul::GridInitialize::GridInitialize(Grid& grid_ref) : m_grid_ref(grid_ref) {};
+
+void ul::GridInitialize::receive(ul::script::cell cell) {
+    m_grid_ref.aliven(cell.first, cell.second);
+}

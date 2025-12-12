@@ -2,12 +2,13 @@
 #include <SDL2/SDL.h>
 #include <sstream>
 
-
-namespace raiisdl {
+namespace raiisdl
+{
     /**
      * RAII managed SDL instance
      */
-    class SDL {
+    class SDL
+    {
     public:
         /**
          * Initialize

@@ -7,11 +7,15 @@
 #include <iostream>
 #include <vector>
 
+// Apparently SDL redefined the
+// main function without my consent.
+// I'm calling the police
+#undef main
 
-int main(int argc, char const *argv[])
+int main(int argc, char **argv)
 {
     // Load config
-    if (argc == 1) 
+    if (argc == 1)
     {
         std::cout << "Please provide a file!" << std::endl;
         return -1;
@@ -36,4 +40,7 @@ int main(int argc, char const *argv[])
 
     // Begin lifeloop
     ul::life_loop(grid, cellsize, renderer);
+
+    // Exit
+    return 0;
 }

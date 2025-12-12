@@ -1,21 +1,23 @@
 #pragma once
-#include <SDL2/SDL.h>
 #include <raiisdl/window.h>
 
-namespace raiisdl {
+namespace raiisdl
+{
 
     /**
      * RAII managed SDL Renderer
      */
-    class Renderer {
+    class Renderer
+    {
     private:
         Window &m_window_ref;
-        SDL_Renderer* m_renderer_handle;
+        SDL_Renderer *m_renderer_handle;
+
     public:
         /**
          * Initialize with window
          */
-        Renderer(Window& window);
+        Renderer(Window &window);
 
         /**
          * Deinitialize

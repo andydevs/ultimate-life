@@ -7,11 +7,6 @@
 #include <iostream>
 #include <vector>
 
-// Apparently SDL redefined the
-// main function without my consent.
-// I'm calling the police
-#undef main
-
 int main(int argc, char **argv)
 {
     // Load config

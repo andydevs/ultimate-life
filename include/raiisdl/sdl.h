@@ -1,5 +1,5 @@
 #pragma once
-#include <SDL2/SDL.h>
+#include <raiisdl/sdl_macros.h>
 #include <sstream>
 
 namespace raiisdl

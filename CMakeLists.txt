@@ -1,6 +1,17 @@
 cmake_minimum_required(VERSION 3.22)
 project(ultimate_life)
 
+option(LIFESCRIPT_GENERATE_PARSERS "Generate lifescript parsers using ANTLR (Requires ANTLRv4)" OFF)
+if(LIFESCRIPT_GENERATE_PARSERS)
+    message("Will regenerate LifeScript Parsers")
+    find_program(ANTLR4 antlr4 antlr)
+    if (NOT ANTLR4)
+        message(FATAL_ERROR "Executable for ANTLR4 was not found! This is required to regenerate parsers. Either make sure ANTLRv4 is installed in your system (See README.md) or disable parser generating (-DLIFESCRIPT_GENERATE_PARSERS=OFF)")
+    endif(NOT ANTLR4)
+    message(STATUS "ANTLR4 Located (PROGRAM: ${ANTLR4})")
+endif(LIFESCRIPT_GENERATE_PARSERS)
+
+
 set(CMAKE_CXX_STANDARD_REQUIRED 17)
 
 find_package(SDL2 REQUIRED)

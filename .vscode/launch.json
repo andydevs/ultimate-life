@@ -43,7 +43,7 @@
                     "value": "${env:PATH}:${command:cmake.getLaunchTargetDirectory}"
                 }
             ],
-            "externalConsole": false
+            "console": "internalConsole"
         }
     ]
 }

@@ -14,7 +14,8 @@
                 "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
                 "CMAKE_C_COMPILER": "cl.exe",
                 "CMAKE_CXX_COMPILER": "cl.exe",
-                "LIFESCRIPT_GENERATE_PARSERS": "ON"
+                "LIFESCRIPT_GENERATE_PARSERS": "OFF",
+                "ULTIMATE_LIFE_BUILD_TESTS": "ON"
             }
         }
     ],

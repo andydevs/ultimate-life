@@ -1,5 +1,5 @@
 
-// Generated from LifeScript.g4 by ANTLR 4.13.1
+// Generated from LifeScript.g4 by ANTLR 4.13.2
 
 
 #include "LifeScriptVisitor.h"
@@ -40,7 +40,7 @@ struct LifeScriptParserStaticData final {
 #if ANTLR4_USE_THREAD_LOCAL_CACHE
 static thread_local
 #endif
-LifeScriptParserStaticData *lifescriptParserStaticData = nullptr;
+std::unique_ptr<LifeScriptParserStaticData> lifescriptParserStaticData = nullptr;
 
 void lifescriptParserInitialize() {
 #if ANTLR4_USE_THREAD_LOCAL_CACHE
@@ -89,7 +89,7 @@ void lifescriptParserInitialize() {
   for (size_t i = 0; i < count; i++) { 
     staticData->decisionToDFA.emplace_back(staticData->atn->getDecisionState(i), i);
   }
-  lifescriptParserStaticData = staticData.release();
+  lifescriptParserStaticData = std::move(staticData);
 }
 
 }

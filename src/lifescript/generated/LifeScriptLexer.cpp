@@ -1,5 +1,5 @@
 
-// Generated from LifeScript.g4 by ANTLR 4.13.1
+// Generated from LifeScript.g4 by ANTLR 4.13.2
 
 
 #include "LifeScriptLexer.h"
@@ -45,7 +45,7 @@ struct LifeScriptLexerStaticData final {
 #if ANTLR4_USE_THREAD_LOCAL_CACHE
 static thread_local
 #endif
-LifeScriptLexerStaticData *lifescriptlexerLexerStaticData = nullptr;
+std::unique_ptr<LifeScriptLexerStaticData> lifescriptlexerLexerStaticData = nullptr;
 
 void lifescriptlexerLexerInitialize() {
 #if ANTLR4_USE_THREAD_LOCAL_CACHE
@@ -108,7 +108,7 @@ void lifescriptlexerLexerInitialize() {
   for (size_t i = 0; i < count; i++) { 
     staticData->decisionToDFA.emplace_back(staticData->atn->getDecisionState(i), i);
   }
-  lifescriptlexerLexerStaticData = staticData.release();
+  lifescriptlexerLexerStaticData = std::move(staticData);
 }
 
 }

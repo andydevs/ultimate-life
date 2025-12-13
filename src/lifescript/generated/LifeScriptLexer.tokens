@@ -1,0 +1,13 @@
+T__0=1
+T__1=2
+T__2=3
+T__3=4
+IDENTIFIER=5
+NEWLINE=6
+WS=7
+RELNUM=8
+ABSNUM=9
+'grid'=1
+'def'=2
+'end'=3
+'@'=4

@@ -1,16 +1,13 @@
 {
     "configurations": [
         {
-            "name": "Mac",
+            "name": "Base",
             "includePath": [
-                "${workspaceFolder}/**",
-                "~/.conan2/**"
+                "${workspaceFolder}/**"
             ],
             "defines": [],
-            "compilerPath": "/usr/bin/clang",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "macos-clang-x64",
             "configurationProvider": "ms-vscode.cmake-tools"
         }
     ],

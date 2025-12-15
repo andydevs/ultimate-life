@@ -6,13 +6,18 @@ ul::Grid::Grid(int width, int height) : m_width(width),
                                         m_height(height),
                                         m_frame(0)
 {
-    m_buffer = new char **[ul::GRID_FRAMES];
+    m_buffer = new bool **[ul::GRID_FRAMES];
     for (int f : utils::range<int>(ul::GRID_FRAMES))
     {
-        m_buffer[f] = new char *[m_width];
+        m_buffer[f] = new bool *[m_width];
         for (int i : utils::range<int>(m_width))
         {
-            m_buffer[f][i] = new char[m_height];
+            m_buffer[f][i] = new bool[m_height];
+            for (int j : utils::range<int>(m_height))
+            {
+                // Make sure we initialize this to false
+                m_buffer[f][i][j] = false;
+            }
         }
     }
 }
@@ -41,7 +46,7 @@ int ul::Grid::height()
     return m_height;
 }
 
-int ul::Grid::cell(int i, int j)
+bool ul::Grid::cell(int i, int j)
 {
     return m_buffer[m_frame][i][j];
 }

@@ -28,9 +28,19 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(SDL2 ANTLR4_RUNTIME)
 
 # Life Script Parsers
-if(LIFESCRIPT_GENERATE_PARSERS)
-    message(STATUS "Will regenerate LifeScript parsers at build time")
+set(LS_PARSER_NAME LifeScript)
+set(LS_PARSER_PATH ${PROJECT_SOURCE_DIR}/src/lifescript)
+set(LS_GENERATED_DIR generated)
+set(LS_GENERATED_PATH ${LS_PARSER_PATH}/${LS_GENERATED_DIR})
+set(LS_PARSER_SRC 
+    ${LS_GENERATED_PATH}/${LS_PARSER_NAME}Lexer.cpp
+    ${LS_GENERATED_PATH}/${LS_PARSER_NAME}Parser.cpp
+    ${LS_GENERATED_PATH}/${LS_PARSER_NAME}Visitor.cpp
+    ${LS_GENERATED_PATH}/${LS_PARSER_NAME}BaseVisitor.cpp)
 
+# Generate command based on option
+if(LIFESCRIPT_GENERATE_PARSERS)
+message(STATUS "Will regenerate LifeScript parsers at build time")
     # Find ANTLR. Make sure we got it in our system
     find_program(ANTLR4 antlr4 antlr)
     if (NOT ANTLR4)
@@ -40,17 +50,7 @@ Either make sure ANTLRv4 is installed in your system (See README.md) or disable 
     endif(NOT ANTLR4)
     message(STATUS "ANTLR4 Located (Program Location: ${ANTLR4})")
 
-
     # Declare lifescript parser generation command
-    set(LS_PARSER_NAME LifeScript)
-    set(LS_PARSER_PATH ${PROJECT_SOURCE_DIR}/src/lifescript)
-    set(LS_GENERATED_DIR generated)
-    set(LS_GENERATED_PATH ${LS_PARSER_PATH}/${LS_GENERATED_DIR})
-    set(LS_PARSER_SRC 
-        ${LS_GENERATED_PATH}/${LS_PARSER_NAME}Lexer.cpp
-        ${LS_GENERATED_PATH}/${LS_PARSER_NAME}Parser.cpp
-        ${LS_GENERATED_PATH}/${LS_PARSER_NAME}Visitor.cpp
-        ${LS_GENERATED_PATH}/${LS_PARSER_NAME}BaseVisitor.cpp)
     file(MAKE_DIRECTORY "${LS_GENERATED_PATH}")
     foreach(ls_parser_file ${LS_PARSER_SRC})
         set_property(SOURCE ${ls_parser_file} PROPERTY GENERATED TRUE)

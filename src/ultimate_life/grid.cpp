@@ -2,15 +2,14 @@
 #include <utils/range2d.h>
 #include <utils/range.h>
 
-ul::Grid::Grid(int width, int height): 
-    m_width(width),
-    m_height(height),
-    m_frame(0)
+ul::Grid::Grid(int width, int height) : m_width(width),
+                                        m_height(height),
+                                        m_frame(0)
 {
-    m_buffer = new char**[ul::GRID_FRAMES];
+    m_buffer = new char **[ul::GRID_FRAMES];
     for (int f : utils::range<int>(ul::GRID_FRAMES))
     {
-        m_buffer[f] = new char*[m_width];
+        m_buffer[f] = new char *[m_width];
         for (int i : utils::range<int>(m_width))
         {
             m_buffer[f][i] = new char[m_height];
@@ -18,40 +17,46 @@ ul::Grid::Grid(int width, int height):
     }
 }
 
-ul::Grid::~Grid() {
+ul::Grid::~Grid()
+{
     int grid_width = width();
     for (int f : utils::range<int>(GRID_FRAMES))
     {
         for (int i : utils::range<int>(m_width))
         {
-            delete m_buffer[f][i];   
+            delete m_buffer[f][i];
         }
         delete m_buffer[f];
     }
     delete m_buffer;
 }
 
-int ul::Grid::width() {
+int ul::Grid::width()
+{
     return m_width;
 }
 
-int ul::Grid::height() {
+int ul::Grid::height()
+{
     return m_height;
 }
 
-int ul::Grid::cell(int i, int j) {
+int ul::Grid::cell(int i, int j)
+{
     return m_buffer[m_frame][i][j];
 }
 
-void ul::Grid::aliven(int i, int j) {
+void ul::Grid::aliven(int i, int j)
+{
     m_buffer[m_frame][i][j] = 1;
 }
 
-int ul::Grid::neighbors(int i, int j) {
+int ul::Grid::neighbors(int i, int j)
+{
     int c = 0;
     utils::range<int> rx(std::max(i - 1, 0), std::min(i + 2, width()));
     utils::range<int> ry(std::max(j - 1, 0), std::min(j + 2, height()));
-    for (auto [u, v] : utils::range2d<int>(rx, ry)) 
+    for (auto [u, v] : utils::range2d<int>(rx, ry))
     {
         if ((u != i || v != j) && m_buffer[m_frame][u][v])
         {
@@ -61,7 +66,8 @@ int ul::Grid::neighbors(int i, int j) {
     return c;
 }
 
-void ul::Grid::update() {
+void ul::Grid::update()
+{
     for (auto [i, j] : grid_indeces())
     {
         int c = neighbors(i, j);
@@ -79,8 +85,9 @@ ul::utils::range2d<int> ul::Grid::grid_indeces()
     return utils::range2d<int>(rx, ry);
 }
 
-ul::GridInitialize::GridInitialize(Grid& grid_ref) : m_grid_ref(grid_ref) {};
+ul::GridInitialize::GridInitialize(Grid &grid_ref) : m_grid_ref(grid_ref) {};
 
-void ul::GridInitialize::receive(ul::script::cell cell) {
+void ul::GridInitialize::receive(ul::script::cell cell)
+{
     m_grid_ref.aliven(cell.first, cell.second);
 }

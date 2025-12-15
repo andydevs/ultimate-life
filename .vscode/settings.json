@@ -92,6 +92,7 @@
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
         "CMakeUserPresets.json": true,
-        ".gitattributes": true
+        ".gitattributes": true,
+        "dist/": true
     }
 }

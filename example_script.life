@@ -1,5 +1,5 @@
-grid width 1280
-grid height 960
+grid width 640
+grid height 480
 grid cellsize 4
 
 def rpentomino

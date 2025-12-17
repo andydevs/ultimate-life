@@ -2,39 +2,14 @@
 #include <utils/range2d.h>
 #include <utils/range.h>
 
+#define INDEX(width, height, f, i, j) (f * width * height) + (i * height) + j
+
 ul::Grid::Grid(int width, int height) : m_width(width),
                                         m_height(height),
-                                        m_frame(0)
-{
-    m_buffer = new bool **[ul::GRID_FRAMES];
-    for (int f : utils::range<int>(ul::GRID_FRAMES))
-    {
-        m_buffer[f] = new bool *[m_width];
-        for (int i : utils::range<int>(m_width))
-        {
-            m_buffer[f][i] = new bool[m_height];
-            for (int j : utils::range<int>(m_height))
-            {
-                // Make sure we initialize this to false
-                m_buffer[f][i][j] = false;
-            }
-        }
-    }
-}
+                                        m_frame(0),
+                                        m_buffer(2 * width * height, false) {}
 
-ul::Grid::~Grid()
-{
-    int grid_width = width();
-    for (int f : utils::range<int>(GRID_FRAMES))
-    {
-        for (int i : utils::range<int>(m_width))
-        {
-            delete m_buffer[f][i];
-        }
-        delete m_buffer[f];
-    }
-    delete m_buffer;
-}
+ul::Grid::~Grid() {}
 
 int ul::Grid::width()
 {
@@ -48,12 +23,12 @@ int ul::Grid::height()
 
 bool ul::Grid::cell(int i, int j)
 {
-    return m_buffer[m_frame][i][j];
+    return m_buffer[INDEX(m_width, m_height, m_frame, i, j)];
 }
 
 void ul::Grid::aliven(int i, int j)
 {
-    m_buffer[m_frame][i][j] = 1;
+    m_buffer[INDEX(m_width, m_height, m_frame, i, j)] = true;
 }
 
 int ul::Grid::neighbors(int i, int j)
@@ -63,7 +38,7 @@ int ul::Grid::neighbors(int i, int j)
     utils::range<int> ry(std::max(j - 1, 0), std::min(j + 2, height()));
     for (auto [u, v] : utils::range2d<int>(rx, ry))
     {
-        if ((u != i || v != j) && m_buffer[m_frame][u][v])
+        if ((u != i || v != j) && m_buffer[INDEX(m_width, m_height, m_frame, u, v)])
         {
             c++;
         }
@@ -76,7 +51,7 @@ void ul::Grid::update()
     for (auto [i, j] : grid_indeces())
     {
         int c = neighbors(i, j);
-        m_buffer[!m_frame][i][j] = (c == 3) || (c == 2 && cell(i, j));
+        m_buffer[INDEX(m_width, m_height, !m_frame, i, j)] = (c == 3) || (c == 2 && cell(i, j));
     }
 
     // Swap buffers

@@ -1,6 +1,7 @@
 #pragma once
 #include <lifescript/lifescript.h>
 #include <utils/range2d.h>
+#include <vector>
 
 namespace ul
 {
@@ -9,12 +10,6 @@ namespace ul
 
     class Grid
     {
-    private:
-        int m_width;
-        int m_height;
-        bool ***m_buffer;
-        int m_frame;
-
     public:
         Grid(int width, int height);
         ~Grid();
@@ -25,6 +20,12 @@ namespace ul
         int neighbors(int i, int j);
         void update();
         utils::range2d<int> grid_indeces();
+
+    private:
+        int m_width;
+        int m_height;
+        std::vector<bool> m_buffer;
+        int m_frame;
     };
 
     class GridInitialize : public script::CellFunctional

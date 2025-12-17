@@ -7,8 +7,8 @@
 raiisdl::Renderer::Renderer(Window &window) : m_window_ref(window)
 {
     SDL_Window *win_h = m_window_ref.__UNSAFE_get_window_handle();
-    m_renderer_handle = SDL_CreateRenderer(win_h, -1,
-                                           SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
+    m_renderer_handle = SDL_CreateRenderer(win_h, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
+    ASSERT_SDL_RESOURCE(m_renderer_handle, "Unable to create renderer for Window");
 }
 
 /**

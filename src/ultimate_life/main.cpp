@@ -9,24 +9,24 @@
 
 int main(int argc, char **argv)
 {
-    // Load config
+    // Load script
     if (argc == 1)
     {
-        std::cout << "Please provide a file!" << std::endl;
+        std::cout << "Please provide a script file!" << std::endl;
         return -1;
     }
     std::string filename = argv[1];
-    ul::script::LifeScript config = ul::script::readScript(filename);
+    ul::script::LifeScript script = ul::script::readScript(filename);
 
     // Grid options
-    int width = config.grid_property("width", 640);
-    int height = config.grid_property("height", 480);
-    int cellsize = config.grid_property("cellsize", 5);
+    int width = script.grid_property("width", 640);
+    int height = script.grid_property("height", 480);
+    int cellsize = script.grid_property("cellsize", 5);
 
     // Initialize grid
     ul::Grid grid(width / cellsize, height / cellsize);
     ul::GridInitialize init_grid(grid);
-    config.foreach_cell(init_grid);
+    script.foreach_cell(init_grid);
 
     // Initialize SDL
     raiisdl::SDL sdl;

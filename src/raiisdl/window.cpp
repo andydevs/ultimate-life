@@ -11,7 +11,7 @@
 raiisdl::Window::Window(const SDL &_sdl, const char *title, int w, int h) : m_width(w), m_height(h)
 {
     m_window_handle = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, 0);
-    ASSERT_SDL_RESOURCE(m_window_handle, "Unable to create window instance!");
+    assert_sdl_resource(m_window_handle, "Unable to create window instance!");
 }
 
 /**

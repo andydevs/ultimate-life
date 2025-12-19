@@ -12,12 +12,6 @@ if (MSVC)
     message(STATUS "Building using MSVC")
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 endif(MSVC)
-if(UNIX)
-    message(STATUS "Building using CLANG")
-    set(CMAKE_C_LINKER_FLAGS "-std=c11")
-    set(CMAKE_CXX_LINKER_FLAGS "-std=c++11")
-endif()
-
 
 # Fetch required dependencies
 include(FetchContent)

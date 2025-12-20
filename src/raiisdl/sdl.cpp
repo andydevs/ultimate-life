@@ -1,10 +1,10 @@
 #include <raiisdl/sdl.h>
-#include <raiisdl/macros.h>
+#include <raiisdl/error.hpp>
 
 raiisdl::SDL::SDL()
 {
     SDL_SetMainReady();
-    GUARD_SDL_ERROR(
+    assert_sdl_call(
         SDL_Init(SDL_INIT_VIDEO),
         "SDL could not initialize!");
 }

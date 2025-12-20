@@ -9,6 +9,7 @@ option(ULTIMATE_LIFE_BUILD_TESTS   "Build google test project" OFF)
 
 # Fix MSVC Static Linking
 if (MSVC)
+    message(STATUS "Building using MSVC")
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 endif(MSVC)
 
@@ -84,7 +85,6 @@ target_link_libraries(raiisdl SDL2::SDL2-static)
 
 # Ultimate Life EXE
 file(GLOB UL_EXE_SRC src/ultimate_life/*.cpp)
-message(${UL_EXE_SRC})
 add_executable(ultimate_life ${UL_EXE_SRC})
 target_link_libraries(ultimate_life utils lifescript raiisdl)
 install(TARGETS ultimate_life)

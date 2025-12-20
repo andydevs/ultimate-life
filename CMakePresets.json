@@ -17,6 +17,21 @@
                 "LIFESCRIPT_GENERATE_PARSERS": "OFF",
                 "ULTIMATE_LIFE_BUILD_TESTS": "OFF"
             }
+        },
+        {
+            "name": "Clang-Debug",
+            "displayName": "Linux AMD64 Clang Debug",
+            "description": "Using compilers for Clang (and Make) (x64 architecture)",
+            "generator": "Unix Makefiles",
+            "binaryDir": "${sourceDir}/out/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+                "CMAKE_C_COMPILER": "clang",
+                "CMAKE_CXX_COMPILER": "clang++",
+                "LIFESCRIPT_GENERATE_PARSERS": "OFF",
+                "ULTIMATE_LIFE_BUILD_TESTS": "OFF"
+            }
         }
     ],
     "buildPresets": [
@@ -24,6 +39,12 @@
             "name": "MSVC-Debug",
             "displayName": "Windows AMD64 MSVC17 Debug",
             "configurePreset": "MSVC-Debug",
+            "configuration": "Debug"
+        },
+        {
+            "name": "Clang-Debug",
+            "displayName": "Linux AMD64 Clang Debug",
+            "configurePreset": "Clang-Debug",
             "configuration": "Debug"
         }
     ]

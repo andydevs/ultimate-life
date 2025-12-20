@@ -9,8 +9,15 @@ namespace raiisdl
     class sdl_runtime_error : public std::exception
     {
     public:
-        sdl_runtime_error(std::string &raiisdl_err_msg, const char *sdl_err_msg);
-        const char *what() const noexcept override;
+        sdl_runtime_error(std::string &raiisdl_err_msg, const char *sdl_err_msg)
+        {
+            m_raiisdl_err_msg = raiisdl_err_msg + " SDL_ERROR: " + sdl_err_msg;
+        }
+
+        const char *what() const noexcept override
+        {
+            return m_raiisdl_err_msg.c_str();
+        }
 
     private:
         std::string m_raiisdl_err_msg;

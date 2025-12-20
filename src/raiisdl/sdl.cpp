@@ -1,5 +1,5 @@
 #include <raiisdl/sdl.h>
-#include <raiisdl/error.h>
+#include <raiisdl/error.hpp>
 
 raiisdl::SDL::SDL()
 {

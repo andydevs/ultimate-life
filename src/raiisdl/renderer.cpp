@@ -1,4 +1,4 @@
-#include <raiisdl/error.h>
+#include <raiisdl/error.hpp>
 #include <raiisdl/renderer.h>
 #include <format>
 
